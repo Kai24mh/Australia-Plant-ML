@@ -125,6 +125,9 @@ scoring = {
     "MAE": "neg_mean_absolute_error",
     "RMSE": "neg_root_mean_squared_error"}
 
+
+
+
 cv_results = cross_validate(
     rf_model,
     X,
@@ -144,8 +147,8 @@ mean_rmse = -np.mean(cv_results["test_RMSE"])
 
 print(f"\n{'-' * 50}\nMODEL PERFORMANCE\n{'-' * 50}")
 print(f"Mean R²:   {mean_r2:.3f}")
-print(f"Mean MAE:  {mean_mae:.3f} buds")
-print(f"Mean RMSE: {mean_rmse:.3f} buds")
+print(f"Mean MAE:  {mean_mae:.2f} buds")
+print(f"Mean RMSE: {mean_rmse:.2f} buds")
 
 rf_model.fit(X, y)
 
@@ -153,6 +156,8 @@ rf_model.fit(X, y)
 importance = pd.DataFrame({
     "Variable": features,
     "Importance": rf_model.feature_importances_})
+
+importance["Importance"] = importance["Importance"].round(3)
 
 importance = importance.sort_values(
     "Importance",

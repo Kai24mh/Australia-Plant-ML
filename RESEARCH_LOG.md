@@ -148,8 +148,8 @@ Random Forest feature importance was also used to compare the relative contribut
 | Model Performance | |
 | --- | ---:|
 | Mean R² | -0.052 |
-| Mean MAE | 3.133 buds |
-| Mean RMSE | 4.983 buds |
+| Mean MAE | 3.13 buds |
+| Mean RMSE | 4.98 buds |
 
 The negative mean R² (-0.052) indicates that the model performed poorly when predicting bud production in unseen plots and did not outperform a simple baseline prediction based on the mean. Across cross-validation folds, predictions differed from observed bud counts by an average of approximately 3.13 buds (MAE), while the RMSE of 4.98 buds indicates that larger prediction errors were also present.
 
@@ -157,12 +157,12 @@ The negative mean R² (-0.052) indicates that the model performed poorly when pr
 
 | Variable | Importance |
 | --- | ---: |
-| Soil.P | 0.270158 |
-| Per.Bare | 0.222694 |
-| Per.Woody | 0.199246 |
-| Canopy.Cover | 0.134436 |
-| Soil.Water | 0.122014 |
-| Per.Litt | 0.051452 |
+| Soil.P | 0.270 |
+| Per.Bare | 0.223 |
+| Per.Woody | 0.199 |
+| Canopy.Cover | 0.134 |
+| Soil.Water | 0.122 |
+| Per.Litt | 0.051 |
 
 Soil phosphorus had the highest feature importance (0.270), followed by percent bare ground (0.223) and percent woody cover (0.199). Together, these variables contributed the most to the Random Forest model’s predictions of bud production. Canopy cover (0.134) and soil water (0.122) showed moderate importance, while percent litter cover had the lowest feature importance (0.051). Overall, the model relied more heavily on soil phosphorus and ground-cover characteristics than on the other environmental predictors.
 
@@ -219,6 +219,28 @@ The final dataset used for Model 1 contained:
 
 Exploratory analysis examined species representation and differences in seed production before developing Model 1.
 
+#### Overall Seed Distribution
+Seed production was highly variable across the dataset.
+
+| Statistic | Seeds |
+| --- | ---: |
+| Mean | 64.12 |
+| Standard Deviation | 173.62 |
+| Minimum | 0 |
+| 25th Percentile | 7 |
+| Median | 20 |
+| 75th Percentile | 52 |
+| Maximum | 5,830 |
+
+The mean seed count (64.12) was substantially greater than the median (20), and the maximum observation reached 5,830 seeds. This indicates a strongly right-skewed distribution in which most observations had relatively low seed counts while a smaller number of observations had very high seed production.
+
+A total of **1,014 observations (7.52%)** recorded zero seeds.
+Total seed production was also examined across plots:
+
+<img src="figures/exploration/seeds_per_plot.png" width="700">
+
+Total seed production varied substantially among plots, with several plots producing considerably more seeds than others. This variation provided an initial indication that seed production was unevenly distributed across the study plots.
+
 Because 70 species were represented in the modeling dataset, the seven most frequently observed species are summarized below:
 
 | Species | Observations | Total Seeds | Mean Seeds | Median Seeds | Std | Min Seeds | Max Seeds |
@@ -233,13 +255,7 @@ Because 70 species were represented in the modeling dataset, the seven most freq
 
 VERO, ARCA, and PEAI were particularly well represented, with more than 2,400 observations each. In contrast, many species had relatively few observations, including several species represented by only one or two observations.
 
-Seed production also differed substantially among species. For example, PEAI averaged **149.79 seeds per observation**, while VERO averaged **18.47** despite having the largest number of observations. POCA also had relatively high seed production, averaging **142.79 seeds** per observation.
-
-Total seed production was also examined across plots:
-
-<img src="figures/exploration/seeds_per_plot.png" width="700">
-
-Total seed production varied substantially among plots, with several plots producing considerably more seeds than others. This variation provided an initial indication that seed production was unevenly distributed across the study plots.
+Seed production also differed substantially among species. For example, PEAI averaged **149.79 seeds per observation**, while VERO averaged **18.47** despite having the largest number of observations. POCA also had relatively high seed production, averaging **142.79 seeds** per observation. These differences in seed production among species suggested that species identity could account for some of the variation not captured by plot-level environmental conditions alone..
 
 ### **4.4 Predictors**
 Model 1 included both biological and environmental predictors.
@@ -278,46 +294,29 @@ Random Forest feature importance was also calculated to examine the relative con
 | Metric | Value |
 | --- | ---: |
 | Mean R² | -0.012 |
-| Mean MAE | 76.275 seeds |
-| Mean RMSE | 172.180 seeds |
+| Mean MAE | 76.28 seeds |
+| Mean RMSE | 172.18 seeds |
 
 The mean R² was close to zero but remained negative, indicating that the model had poor predictive performance when predicting seed production in unseen plots.
 
 The RMSE was substantially larger than the MAE, indicating that some observations had particularly large prediction errors.
-
-#### Overall Seed Distribution
-Seed production was highly variable across the dataset.
-
-| Statistic | Seeds |
-| --- | ---: |
-| Mean | 64.12 |
-| Standard Deviation | 173.62 |
-| Minimum | 0 |
-| 25th Percentile | 7 |
-| Median | 20 |
-| 75th Percentile | 52 |
-| Maximum | 5,830 |
-
-The mean seed count (64.12) was substantially greater than the median (20), and the maximum observation reached 5,830 seeds. This indicates a strongly right-skewed distribution in which most observations had relatively low seed counts while a smaller number of observations had very high seed production.
-
-A total of **1,014 observations (7.52%)** recorded zero seeds.
 
 #### Feature Importance
 The Random Forest model contained **76 predictors** after species identity was encoded alongside the six environmental variables.
 
 The highest-ranking predictors included:
 
-| Predictor | Importance |
+| Variable | Importance |
 | --- | ---: |
-| Soil.Water | 0.218293 |
-| Soil.P | 0.185084 |
-| Per.Bare | 0.111475 |
-| Species_PEAI | 0.106617 |
-| Per.Litt | 0.097950 |
+| Soil.Water | 0.218 |
+| Soil.P | 0.185 |
+| Per.Bare | 0.111 |
+| PEAI | 0.107 |
+| Per.Litt | 0.098 |
 
-Soil water had the highest feature importance, followed by soil phosphorus. `Species_PEAI` was the highest-ranking species-specific predictor and was the fourth most important predictor overall.
+Soil water had the highest feature importance, followed by soil phosphorus. `PEAI` was the highest-ranking species-specific predictor and was the fourth most important predictor overall.
 
-Some species-specific predictors contributed very little to the model. Among the lowest feature importance values were `Species_ERLO`, `Species_AVBA`, `Species_GR.HUGE`, `Species_PTGA.YEL`, and `Species_EMAU`.
+Some species-specific predictors contributed very little to the model. Among the lowest feature importance values were `ERLO`, `AVBA`, `GR.HUGE`, `PTGA.YEL`, and `EMAU`.
 
 <img src="figures/model_1/seeds_feature_importance.png" width="600">
 
@@ -384,12 +383,12 @@ The response variable remained:
 
 The expanded analysis included separate models for the four most frequently represented species:
 
-| Species | Observations |
-| --- | ---: |
-| VERO | 3,027 |
-| ARCA | 2,515 |
-| PEAI | 2,485 |
-| POCA | 943 |
+| Species | Observations | Number of Plots | 
+| --- | --- | ---: |
+| VERO | 3,027 | 46 |
+| ARCA | 2,515 | 61 |
+| PEAI | 2,485 | 74 |
+| POCA | 943 | 71 |
 
 Together, these four species accounted for 8,970 of the 13,485 observations in the full seed dataset.
 
@@ -431,10 +430,187 @@ Random Forest feature importance was also calculated separately for each species
 ### **6.5 Results**
 
 #### **6.5.1 Model 3a - VERO**
+
+VERO was represented by **3,027 observations across 46 plots**. However, observations were unevenly distributed among plots, with several plots containing substantially more VERO observations than others.
+
+<img src="figures/model_3/VERO_observations_per_plot.png" width="800">
+
+Total VERO seed production also varied considerably among plots. Plots with greater numbers of VERO observations generally contributed larger total seed counts, although the relationship was not uniform. This suggests that differences in total seed production among plots reflect both variation in the number of sampled plants and variation in seed production among individual plants.
+
+<img src="figures/model_3/VERO_seeds_per_plot.png" width="800">
+
+
+#### Model Performance
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.366 |
+| Mean MAE | 18.13 seeds |
+| Mean RMSE | 22.92 seeds |
+
+The VERO-specific Random Forest showed poor predictive performance. The mean cross-validated R² was **−0.366**, indicating that predictions on held-out plots performed worse than a simple baseline based on the mean seed count. The model had a mean absolute error of **18.13 seeds** and a root mean squared error of **22.92 seeds**.
+
+These results suggest that the six plot-level environmental variables included in the model were not sufficient to reliably predict individual VERO seed production across plots.
+
+#### Feature importance
+
+| Variable | Importance |
+| --- | ---: |
+| Canopy.Cover | 0.545 |
+| Soil.Water | 0.156 |
+| Per.Litt | 0.095 |
+| Soil.P | 0.087 |
+| Per.Bare | 0.079 |
+| Per.Woody | 0.038 |
+
+Canopy cover had the greatest feature importance (0.545), accounting for more than half of the total Random Forest importance. Soil water was the second most important predictor (0.156), while the remaining environmental variables had substantially lower importance values.
+
+<img src="figures/model_3/VERO_feature_importance.png" width="600">
+
+The importance values indicate which variables the Random Forest relied on most when making predictions, but they do not demonstrate that those variables successfully predicted VERO seed production on previously unseen plots.
+
+**Investigate outlier data and insert here**
+
 #### **6.5.2 Model 3b - ARCA**
+
+ARCA was well represented across the dataset, but observations were unevenly distributed among plots. Several plots contained relatively large numbers of ARCA observations, while many others contained only a small number.
+
+<img src="figures/model_3/ARCA_observations_per_plot.png" width="800">
+
+Total ARCA seed production also varied substantially among plots. Some plots produced several thousand seeds, while others contributed comparatively little. As with VERO, differences in total seed production among plots likely reflect both the number of ARCA observations within each plot and variation in seed production among individual plants.
+
+<img src="figures/model_3/ARCA_seeds_per_plot.png" width="800">
+
+
+#### Model Performance
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.732 |
+| Mean MAE | 69.87 seeds |
+| Mean RMSE | 99.34 seeds |
+
+The ARCA-specific Random Forest showed poor predictive performance. The mean cross-validated R² was **−0.732**, indicating that predictions on held-out plots performed substantially worse than a simple baseline based on the mean seed count.
+
+The mean absolute error was **69.87 seeds**, while the root mean squared error was **99.34 seeds**. The larger RMSE relative to MAE suggests that some prediction errors were particularly large.
+
+#### Feature importance
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.Water | 0.331 |
+| Soil.P | 0.271 |
+| Canopy.Cover | 0.178 |
+| Per.Bare | 0.153 |
+| Per.Litt | 0.037 |
+| Per.Woody | 0.030 |
+
+Soil water had the greatest feature importance (0.331), followed by soil phosphorus (0.271). Canopy cover (0.178) and percent bare ground (0.153) also contributed meaningfully to the model, while percent litter and percent woody cover had relatively low importance.
+
+<img src="figures/model_3/ARCA_feature_importance.png" width="600">
+
+Although soil water and soil phosphorus were the most influential predictors within the fitted Random Forest, these importance values should be interpreted cautiously because overall predictive performance was poor. The negative cross-validated R² indicates that the model did not generalize well to unseen plots.
+
+**Investigate outlier data and insert here**
+
 #### **6.5.3 Model 3c - PEAI**
+
+PEAI observations were distributed across many plots, although sampling was highly uneven. Plot 24 contained substantially more observations than any other plot.
+
+**Note data collection**
+
+<img src="figures/model_3/PEAI_observations_per_plot.png" width="800">
+
+Seed production showed even greater variation across plots. Several plots produced more than 20,000 total seeds, while many produced fewer than 5,000. Notably, the plots with the greatest seed production were not necessarily those with the largest numbers of observations, suggesting substantial differences in seed production per observation.
+
+<img src="figures/model_3/PEAI_seeds_per_plot.png" width="800">
+
+Model 3c produced a mean cross-validated R² of **−0.591**, indicating poor predictive performance on held-out plots. Prediction errors were also relatively large, with a mean MAE of **154.67 seeds** and RMSE of **265.22 seeds**.
+
+The substantial difference between MAE and RMSE is consistent with the large variation in PEAI seed production, as particularly large prediction errors have a greater effect on RMSE.
+
+#### Model Performance
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.591 |
+| Mean MAE | 154.67 seeds |
+| Mean RMSE | 265.22 seeds |
+
+Unlike VERO, no single environmental variable overwhelmingly dominated the PEAI model. Soil phosphorus had the highest importance (0.298), followed by soil water (0.253) and percent litter (0.223). Together, these three variables accounted for most of the model's feature importance.
+
+#### Feature importance
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.P | 0.298 |
+| Soil.Water | 0.253 |
+| Per.Litt | 0.223 |
+| Per.Bare | 0.146 |
+| Canopy.Cover | 0.049 |
+| Per.Woody | 0.031 |
+
+<img src="figures/model_3/PEAI_feature_importance.png" width="600">
+
+Despite these differences in relative importance, the negative R² indicates that the environmental predictors did not generalize well enough to reliably predict PEAI seed production across unseen plots. The high variability in PEAI seed counts may have contributed to the model's difficulty in producing accurate predictions.
+
+**Investigate outlier data and insert here** </br>
+PEAI has the most outliers, assumed to be due to data collection (especially on plot 24).
+
+
 #### **6.5.4 Model 3d - POCA**
+
+POCA observations were spread across multiple portions of the study plots, with higher concentrations occurring in several plots in the 80–100 range. Compared with PEAI, no single plot overwhelmingly dominated the number of observations.
+
+<img src="figures/model_3/POCA_observations_per_plot.png" width="800">
+
+Total POCA seed production varied considerably across these plots. Most plots produced fewer than 5,000 total seeds, while a small number had substantially greater production. In particular, one plot exceeded 10,000 total seeds despite not having the greatest number of POCA observations.
+
+<img src="figures/model_3/POCA_seeds_per_plot.png" width="800">
+
+#### Model Performance
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.321 |
+| Mean MAE | 174.48 seeds |
+| Mean RMSE | 241.36 seeds |
+
+Model 3d had a mean cross-validated R² of **−0.321**. Although this was the least negative R² among the four species-specific models, performance remained below the baseline represented by an R² of zero.
+
+The model produced an MAE of **174.48 seeds** and an RMSE of **241.36 seeds**. These relatively large errors reflect the difficulty of predicting the substantial variation in individual POCA seed counts using the environmental variables available.
+
+#### Feature importance
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.P | 0.303 |
+| Canopy.Cover | 0.237 |
+| Per.Litt | 0.152 |
+| Soil.Water | 0.143 |
+| Per.Bare | 0.092 |
+| Per.Woody | 0.074 |
+
+Soil phosphorus was the highest-ranked predictor for POCA (0.303), followed by canopy cover (0.237). Percent litter and soil water had intermediate importance, while percent bare ground and percent woody cover contributed less to the fitted model.
+
+<img src="figures/model_3/POCA_feature_importance.png" width="600">
+
+**Investigate outlier data and insert here**
+
 #### **6.5.5 Comparison Across Species**
+
+
+
+#### Feature importance
+
+| Species| Observations | Plots | R² | MAE | RMSE |
+| --- |--- |--- |--- |--- | ---: |
+| VERO | 3027 | 46 | -0.366 | 18.13 | 22.92 |
+| ARCE | 2515 | 61 | -0.732 | 69.87 | 99.35 |
+| PEAI | 2485 | 74 | -0.591 | 154.67 | 265.22 |
+| POCA | 943 | 71 | -0.321 | 174.48 | 241.36 |
+
+
 
 ### **6.6 Interpretation**
 ### **6.7 Decisions / Next Steps**

@@ -158,8 +158,8 @@ mean_rmse = -np.mean(cv_results["test_RMSE"])
 
 print(f"\n{'-' * 50}\nMODEL PERFORMANCE\n{'-' * 50}")
 print(f"Mean R²:   {mean_r2:.3f}")
-print(f"Mean MAE:  {mean_mae:.3f} seeds")
-print(f"Mean RMSE: {mean_rmse:.3f} seeds")
+print(f"Mean MAE:  {mean_mae:.2f} seeds")
+print(f"Mean RMSE: {mean_rmse:.2f} seeds")
 
 model.fit(X, y)
 
@@ -187,6 +187,7 @@ importance = pd.DataFrame({
         "random_forest"
     ].feature_importances_})
 
+importance["Importance"] = importance["Importance"].round(3)
 importance = importance.sort_values("Importance", ascending=False)
 
 print(f"\n{'-' * 50}\nFEATURE IMPORTANCE\n{'-' * 50}")

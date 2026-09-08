@@ -152,8 +152,8 @@ for species in top_species:
 
     print("\nMODEL PERFORMANCE")
     print(f"Mean R²:   {mean_r2:.3f}")
-    print(f"Mean MAE:  {mean_mae:.3f} seeds")
-    print(f"Mean RMSE: {mean_rmse:.3f} seeds")
+    print(f"Mean MAE:  {mean_mae:.2f} seeds")
+    print(f"Mean RMSE: {mean_rmse:.2f} seeds")
 
 
     # Save results
@@ -161,9 +161,9 @@ for species in top_species:
         "Species": species,
         "Observations": len(species_df),
         "Plots": species_df["Plot.ID"].nunique(),
-        "R2": mean_r2,
-        "MAE": mean_mae,
-        "RMSE": mean_rmse})
+        "R2": round(mean_r2, 3),
+        "MAE": round(mean_mae, 2),
+        "RMSE": round(mean_rmse, 2)})
 
     # Fit model
     rf_model.fit(X, y)
@@ -175,9 +175,8 @@ for species in top_species:
         "Importance":
             rf_model.feature_importances_})
 
-    importance = importance.sort_values(
-        "Importance",
-        ascending=False)
+    importance["Importance"] = importance["Importance"].round(3)
+    importance = importance.sort_values("Importance", ascending=False)
     
     print("\nFEATURE IMPORTANCE")
     print(importance[["Variable", "Importance"]].to_string(index=False))

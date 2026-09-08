@@ -51,6 +51,24 @@ seeds = pd.read_csv(PROCESSED_DATA_DIR / "seeds.csv")
 
 """ GENERAL SEED EXPLORATION """
 
+# Overall seed production summary
+seed_summary = (
+    seeds["Num.Seed"]
+    .agg(
+        Mean="mean",
+        Standard_Deviation="std",
+        Minimum="min",
+        Percentile_25=lambda x: x.quantile(0.25),
+        Median="median",
+        Percentile_75=lambda x: x.quantile(0.75),
+        Maximum="max")
+    .round(2))
+
+
+print(f"\n{'-' * 50}\nSEED PRODUCTION SUMMARY\n{'-' * 50}")
+print(seed_summary)
+
+
 # Species summary
 species_summary = (
     seeds.groupby("Species").agg(
@@ -185,12 +203,8 @@ plt.show()
 
 """ TARGET SEED EXPLORATION """
 
-# Alternate top_species using comments for either the top 4 or VERO to be explored
-# May also work by replacing the species with another from within seeds.csv['Species']
 
-#top_species = ["VERO"]
 top_species = ["VERO", "ARCA", "PEAI", "POCA"]
-
 seeds_top = seeds[seeds["Species"].isin(top_species)].copy()
 
 
