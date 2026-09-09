@@ -44,7 +44,7 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 **Original file:** `TRAIT.DATA.10.06.2017.csv`</br>
 **Cleaned file:** `buds.csv` </br>
 **Contains:** Individual plant observations, including plot and species identification, reproductive measurements (buds, flowers, and fruits), and plant traits such as height, shape, and phenology. </br>
-**Used For:** Initial exploration of bud production and the first machine-learning model (Model 0) </br>
+**Used For:** Initial exploration of bud production and the first machine-learning model (Model_0) </br>
 **Cleaning performed:**
 - Removed observations with missing bud counts.
 - Removed all entries that weren’t taken in 2016 (the 2017 entries)
@@ -74,6 +74,17 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 - Removed eight unidentified species entries
 - Converted relevant variables to numeric values for analysis
 - Began with **16,963** entries, cleaned to **13,485**
+
+### **2.4 Species Information Data**
+**Original file:** `species_data.csv` </br>
+**Cleaned file:** `species.csv` </br>
+**Contains:** Species-level information, including species name, species code, life form, exotic status, taxonomic family, reserve occurrence, and additional notes </br>
+**Used for:** Providing taxonomic information for Model 2, where species are grouped by taxonomic family to evaluate whether broader taxonomic relationships improve predictions of seed production compared with using individual species identities. </br>
+**Cleaning performed:**
+- Retained only species information relevant to the species included in the analysis.
+- Missing taxonomic information will be manually coded using appropriate taxonomic references.
+- A new CSV file (`species.csv`) containing the completed taxonomic information will be created and used for Model 2.
+
 
 ---
 

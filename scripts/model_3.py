@@ -42,11 +42,7 @@ plots = pd.read_csv(PROCESSED_DATA_DIR / "plots.csv")
 
 """ DEFINE TOP SPECIES """
 
-top_species = [
-    "VERO",
-    "ARCA",
-    "PEAI",
-    "POCA"]
+top_species = ["VERO", "ARCA", "PEAI", "POCA"]
 
 seeds["Species"] = (
     seeds["Species"]
