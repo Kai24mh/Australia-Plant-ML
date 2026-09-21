@@ -27,11 +27,17 @@ PROCESSED_DATA_DIR = ROOT / "data" / "processed"
 
 # Load data
 seeds = pd.read_csv(PROCESSED_DATA_DIR / "seeds.csv")
-species = pd.read_csv(PROCESSED_DATA_R / "species_data.csv")
-
+species = pd.read_csv(PROCESSED_DATA_R / "species_data_TEM_2026.csv")
 
 
 """ FIND MISSING VALUES """
+
+# Match alternative species names/codes
+# Previously considered missing
+seeds["Species"] = seeds["Species"].replace({
+    "PTGA.YEL": "PTGA",
+    "SOLANACEAE": "SOLAN.sp."})
+
 
 # Get unique species from seeds.csv
 seed_species = (
@@ -84,6 +90,19 @@ print(f"Unmatched species: {len(unmatched_species)}")
 
 
 
-""" CREATE NEW CSV """
-# Keep relevent data and add all missing data
+""" CREATE CLEANED SPECIES FILE """
+
+# Keep species information that successfully matched seeds.csv
+cleaned_species = matched_species.drop(
+    columns=["_merge", "code"],
+    errors="ignore")
+
+# Save processed species information
+cleaned_species.to_csv(
+    PROCESSED_DATA_DIR / "species.csv",
+    index=False)
+
+print("\nCleaned species information saved to species.csv")
+
+
 

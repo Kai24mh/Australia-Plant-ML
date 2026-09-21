@@ -76,14 +76,17 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 - Began with **16,963** entries, cleaned to **13,485**
 
 ### **2.4 Species Information Data**
+
 **Original file:** `species_data.csv` </br>
+**Altered file:** `species_data_TEM_2026.csv` </br>
 **Cleaned file:** `species.csv` </br>
 **Contains:** Species-level information, including species name, species code, life form, exotic status, taxonomic family, reserve occurrence, and additional notes </br>
 **Used for:** Providing taxonomic information for Model 2, where species are grouped by taxonomic family to evaluate whether broader taxonomic relationships improve predictions of seed production compared with using individual species identities. </br>
 **Cleaning performed:**
-- Retained only species information relevant to the species included in the analysis.
-- Missing taxonomic information will be manually coded using appropriate taxonomic references.
-- A new CSV file (`species.csv`) containing the completed taxonomic information will be created and used for Model 2.
+- Known missing taxonomic was placed into a new csv file (`species_data_TEM_2026.csv`)
+- All matching values were placed into a new cleaned csv file (`species.csv`) for Model 2
+
+Two assumptions during cleaning: </br>
 
 
 ---
@@ -359,15 +362,128 @@ The next model therefore investigates whether species can be represented using b
 
 ---
 
-## **5. Model 2 — Seed Production: Taxonomic Groups + Environment**
+## **5. Model 2 — Seed Production: Family Groups + Environment**
 
 ### **5.1 Research Question**
+
+Can seed production at the individual observation level be predicted using taxonomic family and plot-level environmental conditions?
+
+Model 2 builds on Model 1 by replacing individual species identity with broader taxonomic family groups. Model 1 represented each of the 70 species as an independent categorical predictor, while Model 2 groups species that belong to the same taxonomic family. This approach investigates whether broader taxonomic relationships can represent biological variation in seed production while reducing the number of categorical predictors included in the model.
+
 ### **5.2 Data**
+
+Model 2 used seed-production data from `seeds.csv`, taxonomic information from `species.csv`, and plot-level environmental data from `plots.csv`.
+
+Species information was matched to the species represented in the seed-production dataset during previous data preparation. Known differences in species identifiers between the original seed and species-information datasets were standardized before creation of `species.csv`.
+
+One unidentified species code, `UK.GRASS`, did not have corresponding taxonomic information and was excluded from Model 2. This resulted in the removal of 4 observations from the Model 1 dataset.
+
+The seed and species datasets were joined using:</br>
+`seeds["Species"]` → `species["Species"]`
+
+The seed and plot datasets were joined using: </br>
+`seeds["Plot.ID"]` → `plots["Plot"]`
+
+The response variable was:
+- `Num.Seed` - Number of seeds recorded for an observation
+
+The final dataset used for Model 2 contained:
+
+- **13,481 observations**
+- **100 plots**
+- **22 taxonomic families**
+
 ### **5.3 Predictors**
+
+Model 2 included both taxonomic and environmental predictors.
+
+Taxonomic family was included as a categorical predictor: </br>
+- `family`
+
+The same six plot-level environmental predictors examined in Models 0 and 1 were retained:
+
+- `Per.Litt` - Percent litter cover
+- `Per.Bare` - Percent bare ground
+- `Per.Woody` - Percent woody cover
+- `Soil.P` - Soil phosphorus
+- `Soil.Water` - Soil water
+- `Canopy.Cover` - Canopy cover
+
+Because taxonomic family is categorical, it was one-hot encoded into separate family-specific predictor variables for use in the Random Forest model.
+
+After one-hot encoding, the model contained **28 predictors**: 22 family-level predictors and six environmental predictors.
+
 ### **5.4 Model Approach**
+
+A **Random Forest Regressor** was used to predict `Num.Seed` using taxonomic family and the six environmental predictors.
+
+The modeling framework was kept consistent with Model 1 so that the effect of changing the biological grouping could be evaluated while maintaining the same general modeling approach.
+
+Model performance was evaluated using **5-fold GroupKFold cross-validation**, with observations grouped by plot. All observations from the same plot were therefore kept within the same fold. This allowed model performance to be evaluated on plots that were not included in the corresponding training data.
+
+Performance was evaluated using:
+
+- **R²** — proportion of variation in seed production explained by the model
+- **MAE** — mean absolute difference between observed and predicted seed counts
+- **RMSE** — measure of prediction error that gives greater weight to larger errors
+
+Random Forest feature importance was also calculated and averaged across the cross-validation folds to examine the relative contribution of taxonomic family and environmental conditions to model predictions.
+
+Because the response variable, environmental predictors, modeling algorithm, and cross-validation strategy were kept consistent with Model 1, Model 2 provides a direct comparison between representing biological variation using individual species and broader taxonomic families.
+
 ### **5.5 Results**
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.153 |
+| Mean MAE | 83.29 seeds |
+| Mean RMSE | 182.92 seeds |
+
+The mean R² was negative, indicating that Model 2 had poor predictive performance when predicting seed production in unseen plots.
+
+The RMSE was substantially larger than the MAE, indicating that some observations had particularly large prediction errors. This pattern was also observed in Model 1 and is consistent with the highly variable and right-skewed distribution of seed production.
+
+#### **Feature Importance**
+
+The Random Forest model contained **28 predictors** after the 22 taxonomic families were encoded alongside the six environmental variables.
+
+The highest-ranking predictors included:
+
+| Variable | Importance |
+| --- | ---: |
+| Per.Bare | 0.204 |
+| Soil.P | 0.197 |
+| Soil.Water | 0.160 |
+| Canopy.Cover | 0.117 |
+| Poaceae | 0.114 |
+| Per.Litt | 0.084 |
+| Asteraceae | 0.042 |
+| Per.Woody | 0.034 |
+
+Environmental variables accounted for most of the highest-ranking predictors. Percent bare ground had the highest feature importance, followed by soil phosphorus and soil water.
+
+`Poaceae` was the highest-ranking family-level predictor and the fifth most important predictor overall, with a feature importance of 0.114. `Asteraceae` was the next highest-ranking family at 0.042. Most other family-level predictors had substantially lower feature importance.
+
+<img src="figures/model_2/family_feature_importance.png" width="800">
+
+
 ### **5.6 Interpretation**
+
+Model 2 had poor predictive performance, with a mean R² of -0.153. Performance was also worse than Model 1, which had a mean R² of -0.012. This suggests that grouping species by taxonomic family did not improve the model's ability to predict seed production in unseen plots.
+
+Environmental variables remained the highest-ranking predictors, particularly percent bare ground, soil phosphorus, and soil water. Poaceae was the highest-ranking family predictor, while most other families had relatively low feature importance.
+
+Grouping species by family may remove important differences among individual species. Although species within the same family are taxonomically related, they may still differ substantially in seed production and their responses to environmental conditions.
+
 ### **5.7 Decisions / Next Steps**
+
+Model 2 reduced the number of biological categories from 70 species to 22 families, but this simplification did not improve predictive performance. Grouping species into broader taxonomic categories may have removed some of the species-level differences that are important for understanding variation in seed production.
+
+The results from Models 1 and 2 suggest that combining many species within a single model may not be the most effective approach. Species vary considerably in both their number of observations and their seed production, which may make it difficult for a single model to represent these differences.
+
+Model 3 will therefore focus on the most frequently recorded species and model each species separately. Prioritizing species with the largest number of observations will provide more data for training and evaluating each species-specific model.
+
+This approach will remove differences among species from within each model and allow Model 3 to focus specifically on whether plot-level environmental conditions can predict variation in seed production within individual species. Model performance and feature importance can then be compared across the selected species.
 
 ---
 
