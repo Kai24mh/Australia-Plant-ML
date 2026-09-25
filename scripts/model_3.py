@@ -100,7 +100,15 @@ for species in top_species:
 
     # Select one species
     species_df = df[df["Species"] == species].copy()
-
+    
+    
+    # Use for excluding outliar data
+    #if species == "POCA":
+        #exclude_plots = [81]
+        #species_df = species_df[
+            #~species_df["Plot.ID"].isin(exclude_plots)].copy()
+    
+    
     # Remove rows missing required values
     species_df = species_df.dropna(
         subset=[target] + numeric_features)

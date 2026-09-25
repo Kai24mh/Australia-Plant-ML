@@ -490,6 +490,7 @@ This approach will remove differences among species from within each model and a
 ## **6. Model 3 — Seed Production: Individual Species**
 
 ### **6.1 Research Question**
+
 Can plot-level environmental conditions better predict seed production when models are restricted to individual, well-represented species?
 
 Model 3 investigates seed production separately within individual species. By removing variation associated with species identity, these models examine whether environmental conditions can predict seed production more effectively within a single species. The models also allow environmental feature importance to be compared across species.
@@ -596,7 +597,39 @@ Canopy cover had the greatest feature importance (0.545), accounting for more th
 
 The importance values indicate which variables the Random Forest relied on most when making predictions, but they do not demonstrate that those variables successfully predicted VERO seed production on previously unseen plots.
 
-**Investigate outlier data and insert here**
+
+#### Outliers
+
+| Plot ID | Entries | Total Seeds | Mean | Median |
+| --- | --- | --- | --- | ---: |
+| 2 | 475 | 6548 | 13.79 | 14 |
+| 15 | 304 | 5342 | 17.57 | 23 |
+
+Together, these plots contained **779** of the **3,027 VERO observations (25.74%)**. Because approximately one-quarter of all VERO observations originated from only two plots, a sensitivity analysis was performed to determine whether their high representation was disproportionately influencing model performance and feature importance.
+
+Plots 2 and 15 were temporarily excluded, leaving 2,248 observations across 44 plots, and the VERO Random Forest was rerun using the same predictors and modeling approach.
+
+#### Sensitivity Analysis
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.344 |
+| Mean MAE | 20.74 seeds |
+| Mean RMSE | 25.67 seeds |
+
+Removing Plots 2 and 15 produced only a small improvement in R², from −0.366 to −0.344. At the same time, prediction errors increased, with MAE increasing from 18.13 to 20.74 seeds and RMSE increasing from 22.92 to 25.67 seeds.
+
+Feature importance also remained broadly similar after the two plots were removed. Canopy cover remained the most important predictor, decreasing slightly from 0.545 to 0.514. Litter cover increased in importance from 0.095 to 0.166, while soil water remained similar at 0.159.
+
+| Variable | Importance |
+| --- | ---: |
+| Canopy.Cover | 0.514 |
+| Soil.Litt | 0.166 |
+| Soil.Water | 0.159 |
+| Soil.P | 0.079 |
+| Per.Bare | 0.054 |
+| Per.Woody | 0.029 |
+
 
 #### **6.5.2 Model 3b - ARCA**
 
@@ -638,13 +671,43 @@ Soil water had the greatest feature importance (0.331), followed by soil phospho
 
 Although soil water and soil phosphorus were the most influential predictors within the fitted Random Forest, these importance values should be interpreted cautiously because overall predictive performance was poor. The negative cross-validated R² indicates that the model did not generalize well to unseen plots.
 
-**Investigate outlier data and insert here**
+#### Outliers
+
+| Plot ID | Entries | Total Seeds | Mean | Median |
+| --- | --- | --- | --- | ---: |
+| 56 | 27 | 7605 | 281.67 | 204 |
+
+Plot 56 contained only 27 observations, but these observations produced a total of 7,605 seeds, with a mean of 281.67 seeds per observation and a median of 204 seeds. Unlike the VERO outlier investigation, the unusual characteristic of Plot 56 was therefore primarily its high seed production rather than unusually high representation.
+
+A sensitivity analysis was performed by temporarily excluding Plot 56 and rerunning the ARCA Random Forest using the same environmental predictors and modeling approach. This left 2,488 observations across 60 plots.
+
+#### Sensitivity Analysis
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -1.229 |
+| Mean MAE | 74.21 seeds |
+| Mean RMSE | 99.27 seeds |
+
+Removing Plot 56 did not improve ARCA model performance. Mean R² decreased substantially from −0.732 to −1.229, indicating poorer predictive performance on held-out plots. MAE also increased from 69.87 to 74.21 seeds, while RMSE remained nearly unchanged at 99.34 and 99.27 seeds, respectively.
+
+Feature importance changed more noticeably after Plot 56 was removed. Soil phosphorus increased from 0.271 to 0.426 and became the most important predictor, while soil water decreased from 0.331 to 0.164.
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.P | 0.426 |
+| Canopy.Cover | 0.173 |
+| Soil.Water | 0.164 |
+| Per.Bare | 0.126 |
+| Per.Litt | 0.063 |
+| Per.Woody | 0.049 |
+
+The sensitivity analysis suggests that Plot 56 influences the relative importance assigned to soil water and soil phosphorus, but its inclusion was not responsible for the poor overall predictive performance of the ARCA model. Excluding the plot substantially worsened R² and increased MAE without meaningfully reducing RMSE. Therefore, the results do not provide a model-performance-based reason to exclude Plot 56 from the final ARCA analysis.
+
 
 #### **6.5.3 Model 3c - PEAI**
 
 PEAI observations were distributed across many plots, although sampling was highly uneven. Plot 24 contained substantially more observations than any other plot.
-
-**Note data collection**
 
 <img src="figures/model_3/PEAI_observations_per_plot.png" width="800">
 
@@ -681,8 +744,53 @@ Unlike VERO, no single environmental variable overwhelmingly dominated the PEAI 
 
 Despite these differences in relative importance, the negative R² indicates that the environmental predictors did not generalize well enough to reliably predict PEAI seed production across unseen plots. The high variability in PEAI seed counts may have contributed to the model's difficulty in producing accurate predictions.
 
-**Investigate outlier data and insert here** </br>
-PEAI has the most outliers, assumed to be due to data collection (especially on plot 24).
+#### Outliers
+
+A large proportion of the PEAI dataset was associated with plots identified as unusual during exploratory analysis. The flagged plots contained **1,144 of the 2,485 PEAI observations (46.04%).**
+
+| Plot ID | Entries | Total Seeds | Mean | Median |
+| --- | --- | --- | --- | ---: |
+| 24 | 652 | 23387 | 35.87 | 32 |
+| 41 | 96 | 38071 | 396.57 | 303 |
+| 47 | 121 | 28023 | 231.60 | 124 |
+| 64 | 16 | 12802 | 1237.62 | 718 |
+| 71 | 34 | 14980 | 440.59 | 254 |
+| 76 | 32 | 23233 | 726.03 | 518 |
+| 77 | 65 | 14388 | 221.35 | 156 |
+| 80 | 40 | 17966 | 449.15 | 328 |
+| 82 | 38 | 27224 | 716.42 | 397 |
+| 100 | 50 | 14852 | 297.04 | 241 |
+
+The unusual PEAI distribution may be influenced by the original sampling design. PEAI was not a primary species of focus during data collection, and its representation therefore differed considerably among plots. Plot 24, for example, was unusual primarily because of its large number of PEAI observations, whereas several other flagged plots contained fewer observations but much greater mean seed production.
+
+Because nearly half of all PEAI observations were associated with these plots, they were not assumed to represent erroneous data. Instead, a sensitivity analysis was performed to evaluate how strongly these plots influenced model performance.
+
+The 10 flagged plots were temporarily excluded and the PEAI Random Forest was rerun using the same environmental predictors and modeling approach. This left 1,341 observations across 64 plots.
+
+#### Sensitivity Analysis
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.306 |
+| Mean MAE | 106.45 seeds |
+| Mean RMSE | 150.93 seeds |
+
+Removing the flagged plots substantially improved all three performance metrics. Mean R² increased from −0.591 to −0.306, while MAE decreased from 154.67 to 106.45 seeds and RMSE decreased from 265.22 to 150.93 seeds. The particularly large reduction in RMSE suggests that the flagged plots contributed to some of the model's largest prediction errors.
+
+Despite these improvements, R² remained negative, indicating that the environmental predictors still did not provide reliable predictions for held-out plots after the flagged observations were removed.
+
+Feature importance also changed following exclusion of the flagged plots. Soil water increased substantially in importance and became the dominant predictor, while percent litter decreased considerably.
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.Water | 0.441 |
+| Soil.P | 0.235 |
+| Canopy.Cover | 0.149 |
+| Per.Bare | 0.073 |
+| Per.Litt | 0.056 |
+| Per.Woody | 0.046 |
+
+The sensitivity analysis indicates that the unusual PEAI distribution had a substantial influence on both model performance and feature importance. However, excluding the flagged plots removed **46.04% of all PEAI observations**, substantially altering the dataset being modeled. Therefore, the improved performance alone does not justify treating these observations as invalid or removing them from the primary analysis. Instead, the comparison demonstrates that PEAI model results are particularly sensitive to the uneven distribution and high seed production observed in a subset of plots.
 
 
 #### **6.5.4 Model 3d - POCA**
@@ -722,11 +830,48 @@ Soil phosphorus was the highest-ranked predictor for POCA (0.303), followed by c
 
 <img src="figures/model_3/POCA_feature_importance.png" width="600">
 
-**Investigate outlier data and insert here**
+
+#### Outliars
+
+Exploration of POCA seed production identified Plot 81 as having unusually high seed production relative to the remaining plots.
+
+| Plot ID | Entries | Total Seeds | Mean | Median |
+| --- | --- | --- | --- | ---: |
+| 81 | 21 | 10591 | 504.33 | 447 |
+
+Plot 81 contained only 21 observations, but these observations produced a total of 10,591 seeds, with a mean of 504.33 seeds per observation and a median of 447 seeds. The unusual characteristic of Plot 81 was therefore its high seed production rather than unusually high representation within the dataset.
+
+A sensitivity analysis was performed by temporarily excluding Plot 81 and rerunning the POCA Random Forest using the same environmental predictors and modeling approach. This left 922 observations across 70 plots.
+
+#### Sensitivity Analysis
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.082 |
+| Mean MAE | 138.54 seeds |
+| Mean RMSE | 204.17 seeds |
+
+Removing Plot 81 improved all three model performance metrics. Mean R² increased from −0.321 to −0.082, bringing model performance substantially closer to the baseline represented by an R² of zero. MAE decreased from 174.48 to 138.54 seeds, while RMSE decreased from 241.36 to 204.17 seeds.
+
+Unlike the PEAI sensitivity analysis, this improvement resulted from removing only 21 of 943 observations (2.23%). This suggests that the unusually high seed production associated with Plot 81 had a disproportionate influence on the model's ability to generalize across plots.
+
+Feature importance remained relatively stable following the removal of Plot 81.
+
+| Variable | Importance |
+| --- | ---: |
+| Soil.P | 0.257 |
+| Canopy.Cover | 0.251 |
+| Soil.Water | 0.175 |
+| Per.Litt | 0.142 |
+| Per.Bare | 0.092 |
+| Per.Woody | 0.084 |
+
+Soil phosphorus and canopy cover remained the two most important predictors, although canopy cover became nearly equal to soil phosphorus after Plot 81 was removed. The remaining variables showed relatively small changes in importance.
+
+Overall, the sensitivity analysis indicates that Plot 81 had a substantial influence on POCA model performance despite representing only 2.23% of POCA observations. However, model performance remained slightly below the R² = 0 baseline after its removal. Unless there is independent evidence that Plot 81 represents a sampling or data-quality issue, its influence alone does not establish that the observations should be removed from the primary analysis.
+
 
 #### **6.5.5 Comparison Across Species**
-
-
 
 #### Feature importance
 
@@ -737,10 +882,45 @@ Soil phosphorus was the highest-ranked predictor for POCA (0.303), followed by c
 | PEAI | 2485 | 74 | -0.591 | 154.67 | 265.22 |
 | POCA | 943 | 71 | -0.321 | 174.48 | 241.36 |
 
+POCA had the R² closest to zero (−0.321), followed by VERO (−0.366), PEAI (−0.591), and ARCA (−0.732). However, all four R² values remained negative, indicating that none of the species-specific Random Forest models reliably predicted individual seed production in previously unseen plots using the six environmental predictors.
+
+Prediction error also differed substantially among species. VERO had considerably lower MAE and RMSE values than the other three species, while PEAI and POCA had much larger prediction errors. However, MAE and RMSE should not be directly interpreted as measures of which species had the strongest model because seed production occurred on different scales among species. Species with larger and more variable seed counts can naturally produce larger absolute errors.
+
+The number of observations also did not correspond directly with model performance. VERO had the largest number of observations and relatively low prediction errors, while POCA had the fewest observations but an R² closest to zero. ARCA and PEAI both contained more than 2,000 observations but continued to show poor predictive performance. This suggests that increasing the number of observations alone was not sufficient to produce reliable predictions across previously unseen plots.
+
+Overall, separating the dataset by species did not resolve the poor predictive performance observed in the broader seed-production models. Although the strength and relative importance of environmental predictors differed among species, the consistently negative R² values suggest that the six plot-level environmental variables alone did not capture enough of the variation in individual seed production to generalize reliably across plots.
+
+### **6.6 Decisions / Next Steps**
+
+The next stage of the project will focus specifically on **VERO** rather than continuing to model multiple species. VERO was a primary species of interest in the original dissertation and was well represented within the available dataset, with 3,027 observations across 46 plots. Focusing on VERO also reduces concerns associated with differences in how other species were represented during data collection. For example, the PEAI analysis showed that uneven representation among plots could have a substantial influence on model performance.
+
+The next step will also investigate the effect of the cross-validation approach. Models 0–3 used GroupKFold by plot, meaning that all observations from a plot were kept together and a model was tested only on plots that were completely absent from its training data. This provides a strict test of whether the model can generalize to new plots.
+
+However, the environmental predictors used in these models are measured at the plot level. Although thousands of individual plant observations are available, plants from the same plot share the same environmental predictor values. Grouping cross-validation by plot therefore limits the number of unique environmental conditions available for training and testing.
+
+As an exploratory comparison, the VERO model will be tested using standard KFold cross-validation without grouping by plot. This allows individual observations from the same plot to occur in both the training and testing sets and evaluates prediction at the individual-observation level rather than requiring generalization to completely unseen plots.
+
+This approach has an important limitation. Because observations from the same plot share environmental predictor values, the model may be tested on plants with the same environmental conditions that were already represented in its training data. Performance from standard KFold may therefore appear better than performance under GroupKFold and should not be interpreted as evidence that the model can predict seed production in new plots.
+
+The two cross-validation approaches will therefore be treated as answering different questions rather than as competing methods. GroupKFold evaluates generalization to previously unseen plots, while KFold evaluates prediction of individual observations within the environmental conditions represented in the sampled plots. Comparing the two will help determine how strongly the plot-level grouping structure affects model performance before additional VERO-specific modeling approaches are explored.
 
 
-### **6.6 Interpretation**
-### **6.7 Decisions / Next Steps**
+## **7. Model 4 - VERO Seed Production by Kfold**
+
+### **7.1 Research Question**
+
+### **7.2 Data**
+
+### **7.3 Predictors**
+
+### **7.4 Model Approach**
+
+### **7.5 Results**
+
+### **7.6 Interpretation**
+
+### **7.7 Decisions / Next Steps**
+
 
 ---
 
