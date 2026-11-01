@@ -58,9 +58,9 @@ seed_summary = (
         Mean="mean",
         Standard_Deviation="std",
         Minimum="min",
-        Percentile_25=lambda x: x.quantile(0.25),
+        Percentile_25 = lambda x: x.quantile(0.25),
         Median="median",
-        Percentile_75=lambda x: x.quantile(0.75),
+        Percentile_75 = lambda x: x.quantile(0.75),
         Maximum="max")
     .round(2))
 
@@ -91,11 +91,11 @@ print(species_summary)
 # Species observations per plot
 species_counts_plot = (
     seeds.pivot_table(
-        index="Plot.ID",
-        columns="Species",
-        values="Num.Seed",
-        aggfunc="size",
-        fill_value=0))
+        index = "Plot.ID",
+        columns = "Species",
+        values = "Num.Seed",
+        aggfunc = "size",
+        fill_value = 0))
 
 # Seeds per species
 seeds_per_species = (
@@ -131,7 +131,7 @@ print(species_counts)
 """ PLOTTING """
 
 # Total seeds per species
-plt.figure(figsize=(16, 6))
+plt.figure(figsize = (16, 6))
 
 plt.bar(
     seeds_per_species.index,
@@ -147,7 +147,7 @@ plt.tight_layout()
 
 plt.savefig(
     FIGURE_DIR_EX / "seeds_per_species.png",
-    dpi=300,
+    dpi = 300,
     bbox_inches="tight")
 
 plt.show()
@@ -170,14 +170,13 @@ plt.tight_layout()
 plt.savefig(
     FIGURE_DIR_EX / "seeds_per_plot.png",
     dpi=300,
-    bbox_inches="tight"
-)
+    bbox_inches="tight")
 
 plt.show()
 
 
 # Total plant observations per plot
-plt.figure(figsize=(16, 6))
+plt.figure(figsize = (16, 6))
 
 plt.bar(
     plot_counts.index,
@@ -193,8 +192,8 @@ plt.tight_layout()
 
 plt.savefig(
     FIGURE_DIR_EX / "plant_observations_per_plot.png",
-    dpi=300,
-    bbox_inches="tight")
+    dpi = 300,
+    bbox_inches = "tight")
 
 plt.show()
 
@@ -202,7 +201,6 @@ plt.show()
 
 
 """ TARGET SEED EXPLORATION """
-
 
 top_species = ["VERO", "ARCA", "PEAI", "POCA"]
 seeds_top = seeds[seeds["Species"].isin(top_species)].copy()
@@ -213,10 +211,10 @@ species_top_summary = (
     seeds_top
     .groupby(["Plot.ID", "Species"])
     .agg(
-        Entries=("Num.Seed", "size"),
-        Total_Seeds=("Num.Seed", "sum"),
-        Mean_Seeds=("Num.Seed", "mean"),
-        Median_Seeds=("Num.Seed", "median"))
+        Entries = ("Num.Seed", "size"),
+        Total_Seeds = ("Num.Seed", "sum"),
+        Mean_Seeds = ("Num.Seed", "mean"),
+        Median_Seeds = ("Num.Seed", "median"))
     .reset_index()
     .round({
         "Mean_Seeds": 2,
@@ -285,7 +283,6 @@ for species in top_species:
 
 """ OUTLIERS """
 
-# Results determined in RESEARCH_LOG.md
 outliers = []
 
 for species in top_species:

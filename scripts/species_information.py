@@ -53,19 +53,19 @@ print(seed_species)
 # Merge files
 species_match = seed_species.merge(
     species,
-    left_on="Species",
-    right_on="code",
-    how="left",
-    validate="one_to_one",
-    indicator=True)
+    left_on = "Species",
+    right_on = "code",
+    how = "left",
+    validate = "one_to_one",
+    indicator = True)
 
 
 # Matches species
 matched_species = (
     species_match[
         species_match["_merge"] == "both"]
-    .drop(columns="_merge")
-    .reset_index(drop=True))
+    .drop(columns = "_merge")
+    .reset_index(drop = True))
 
 print(f"\n{'-' * 50}\nMATCHED SPECIES\n{'-' * 50}")
 print(matched_species)
@@ -76,13 +76,14 @@ unmatched_species = (
     species_match.loc[
         species_match["_merge"] == "left_only",
         "Species"]
-    .reset_index(drop=True))
+    .reset_index(drop = True))
 
 print(f"\n{'-' * 50}\nUNMATCHED SPECIES FROM SEEDS.CSV\n{'-' * 50}")
 print(unmatched_species)
 
 
-# Summary
+""" SUMMARY """
+
 print(f"\n{'-' * 50}\nMATCH SUMMARY\n{'-' * 50}")
 print(f"Unique species in seeds.csv: {len(seed_species)}")
 print(f"Matched species: {len(matched_species)}")
@@ -94,15 +95,13 @@ print(f"Unmatched species: {len(unmatched_species)}")
 
 # Keep species information that successfully matched seeds.csv
 cleaned_species = matched_species.drop(
-    columns=["_merge", "code"],
-    errors="ignore")
+    columns = ["_merge", "code"],
+    errors = "ignore")
 
 # Save processed species information
 cleaned_species.to_csv(
     PROCESSED_DATA_DIR / "species.csv",
     index=False)
-
-print("\nCleaned species information saved to species.csv")
 
 
 

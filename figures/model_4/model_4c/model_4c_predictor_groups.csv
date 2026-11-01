@@ -1,0 +1,175 @@
+Group,Predictor
+Baseline,Per.Litt
+Baseline,Per.Bare
+Baseline,Per.Woody
+Baseline,Soil.P
+Baseline,Soil.Water
+Baseline,Canopy.Cover
+Functional,Per.Litt
+Functional,Per.Bare
+Functional,Per.Woody
+Functional,Soil.P
+Functional,Soil.Water
+Functional,Canopy.Cover
+Functional,LifeForm_Prop_annual.forb
+Functional,LifeForm_Prop_annual.graminoid
+Functional,LifeForm_Prop_graminoid
+Functional,LifeForm_Prop_perennial.forb
+Functional,LifeForm_Prop_perennial.graminoid
+Functional,LifeForm_Prop_perennial.shrub
+Functional,LifeForm_Richness
+Functional,LifeForm_Shannon
+Functional,LifeForm_KnownFraction
+Family,Per.Litt
+Family,Per.Bare
+Family,Per.Woody
+Family,Soil.P
+Family,Soil.Water
+Family,Canopy.Cover
+Family,Family_Prop_Aizoaceae
+Family,Family_Prop_Amaranthaceae
+Family,Family_Prop_Apiaceae
+Family,Family_Prop_Araliaceae
+Family,Family_Prop_Asphodelaceae
+Family,Family_Prop_Asteraceae
+Family,Family_Prop_Boraginaceae
+Family,Family_Prop_Brassicaceae
+Family,Family_Prop_Caryophyllaceae
+Family,Family_Prop_Chenopodiacea
+Family,Family_Prop_Chenopodiaceae
+Family,Family_Prop_Crassulaceae
+Family,Family_Prop_Fabaceae
+Family,Family_Prop_Geraniaceae
+Family,Family_Prop_Goodeniaceae
+Family,Family_Prop_Haloragaceae
+Family,Family_Prop_Montiaceae
+Family,Family_Prop_Plantaginaceae
+Family,Family_Prop_Poaceae
+Family,Family_Prop_Polygonaceae
+Family,Family_Prop_Scrophulariaceae
+Family,Family_Prop_Solanaceae
+Family,Family_Prop_Solancaeae
+Family,Family_Richness
+Family,Family_Shannon
+Family,Family_KnownFraction
+Species composition,Per.Litt
+Species composition,Per.Bare
+Species composition,Per.Woody
+Species composition,Soil.P
+Species composition,Soil.Water
+Species composition,Canopy.Cover
+Species composition,SpeciesProp_ACUL
+Species composition,SpeciesProp_ANTO
+Species composition,SpeciesProp_ARCA
+Species composition,SpeciesProp_ARCO
+Species composition,SpeciesProp_AVBA
+Species composition,SpeciesProp_BLDR
+Species composition,SpeciesProp_BRIB
+Species composition,SpeciesProp_BRPE
+Species composition,SpeciesProp_BRRD
+Species composition,SpeciesProp_BRRU
+Species composition,SpeciesProp_BRTO
+Species composition,SpeciesProp_BRTU
+Species composition,SpeciesProp_BUSE
+Species composition,SpeciesProp_CAER
+Species composition,SpeciesProp_CAHI
+Species composition,SpeciesProp_CEOB
+Species composition,SpeciesProp_CRAS
+Species composition,SpeciesProp_DAGL
+Species composition,SpeciesProp_ECPL
+Species composition,SpeciesProp_EHLO
+Species composition,SpeciesProp_ELSC
+Species composition,SpeciesProp_EMAU
+Species composition,SpeciesProp_ERLO
+Species composition,SpeciesProp_EROD
+Species composition,SpeciesProp_GITE
+Species composition,SpeciesProp_GOBE
+Species composition,SpeciesProp_GONO
+Species composition,SpeciesProp_GOPU
+Species composition,SpeciesProp_GR.HUGE
+Species composition,SpeciesProp_HAOD
+Species composition,SpeciesProp_HOLE
+Species composition,SpeciesProp_HYGL
+Species composition,SpeciesProp_HYPI
+Species composition,SpeciesProp_HYPO
+Species composition,SpeciesProp_LADA
+Species composition,SpeciesProp_MACA
+Species composition,SpeciesProp_MECR
+Species composition,SpeciesProp_MEDI
+Species composition,SpeciesProp_MOMO
+Species composition,SpeciesProp_NIRO
+Species composition,SpeciesProp_OMCO
+Species composition,SpeciesProp_PEAI
+Species composition,SpeciesProp_PEDU
+Species composition,SpeciesProp_PLDE
+Species composition,SpeciesProp_POCA
+Species composition,SpeciesProp_POLE
+Species composition,SpeciesProp_POMU
+Species composition,SpeciesProp_PTEX
+Species composition,SpeciesProp_PTGA
+Species composition,SpeciesProp_PTOB
+Species composition,SpeciesProp_RHPY
+Species composition,SpeciesProp_SCCA
+Species composition,SpeciesProp_SCER
+Species composition,SpeciesProp_SEGL
+Species composition,SpeciesProp_SINO
+Species composition,SpeciesProp_SOLAN.sp.
+Species composition,SpeciesProp_SOOL
+Species composition,SpeciesProp_SPAR
+Species composition,SpeciesProp_STFI
+Species composition,SpeciesProp_STPA
+Species composition,SpeciesProp_TRCY
+Species composition,SpeciesProp_TROR
+Species composition,SpeciesProp_UK.GRASS
+Species composition,SpeciesProp_UKAS
+Species composition,SpeciesProp_VECY
+Species composition,SpeciesProp_VUBR
+Species composition,SpeciesProp_WAAC
+Species composition,SpeciesProp_ZADI
+Diversity,Per.Litt
+Diversity,Per.Bare
+Diversity,Per.Woody
+Diversity,Soil.P
+Diversity,Soil.Water
+Diversity,Canopy.Cover
+Diversity,Species_Richness
+Diversity,Species_Shannon
+Diversity,Species_Simpson
+Diversity,Species_Evenness
+Competition,Per.Litt
+Competition,Per.Bare
+Competition,Per.Woody
+Competition,Soil.P
+Competition,Soil.Water
+Competition,Canopy.Cover
+Competition,Other_Individuals
+Competition,OtherSpecies_Richness
+Competition,OtherSpecies_Shannon
+Competition,OtherSpecies_Simpson
+Competition,OtherSpecies_Proportion
+Combined,Per.Litt
+Combined,Per.Bare
+Combined,Per.Woody
+Combined,Soil.P
+Combined,Soil.Water
+Combined,Canopy.Cover
+Combined,LifeForm_Prop_annual.forb
+Combined,LifeForm_Prop_annual.graminoid
+Combined,LifeForm_Prop_graminoid
+Combined,LifeForm_Prop_perennial.forb
+Combined,LifeForm_Prop_perennial.graminoid
+Combined,LifeForm_Prop_perennial.shrub
+Combined,LifeForm_Richness
+Combined,LifeForm_Shannon
+Combined,LifeForm_KnownFraction
+Combined,Species_Richness
+Combined,Species_Shannon
+Combined,Species_Simpson
+Combined,Species_Evenness
+Combined,Other_Individuals
+Combined,OtherSpecies_Richness
+Combined,OtherSpecies_Shannon
+Combined,OtherSpecies_Simpson
+Combined,OtherSpecies_Proportion
+Combined,Dominant_Species_Proportion
+Combined,Top3_Species_Proportion

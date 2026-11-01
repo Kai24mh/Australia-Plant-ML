@@ -56,10 +56,10 @@ seeds = seeds[seeds["Species"].isin(top_species)].copy()
 # New dataframe combining species and plots
 df = seeds.merge(
     plots,
-    left_on="Plot.ID",
-    right_on="Plot",
-    how="left",
-    validate="many_to_one")
+    left_on = "Plot.ID",
+    right_on = "Plot",
+    how = "left",
+    validate = "many_to_one")
 
 print("Total observations:", len(df))
 print("Observations without matching plot data:", df["Plot"].isna().sum())
@@ -77,7 +77,6 @@ numeric_features = [
     "Soil.P",
     "Soil.Water",
     "Canopy.Cover"]
-
 
 # Convert variables to numeric
 for column in [target] + numeric_features:
@@ -98,7 +97,6 @@ for species in top_species:
 
     print(f"\n{'-' * 50}\n{species}\n{'-' * 50}")
 
-    # Select one species
     species_df = df[df["Species"] == species].copy()
     
     
@@ -123,22 +121,17 @@ for species in top_species:
 
     groups = species_df["Plot.ID"]
 
-
-    # Random Forest
     rf_model = RandomForestRegressor(
-        n_estimators=500,
-        random_state=42,
-        n_jobs=-1)
+        n_estimators = 500,
+        random_state = 42,
+        n_jobs = -1)
 
-
-    # Grouped cross-validation
     cv = GroupKFold(n_splits=5)
 
     scoring = {
         "R2": "r2",
         "MAE": "neg_mean_absolute_error",
         "RMSE": "neg_root_mean_squared_error"}
-
 
     cv_results = cross_validate(
         rf_model,
@@ -158,7 +151,6 @@ for species in top_species:
     print(f"Mean R²:   {mean_r2:.3f}")
     print(f"Mean MAE:  {mean_mae:.2f} seeds")
     print(f"Mean RMSE: {mean_rmse:.2f} seeds")
-
 
     # Save results
     model_results.append({
@@ -188,9 +180,10 @@ for species in top_species:
     importance_results.append(importance)
     
     
+    
     """ PLOTTING """
     # Plot feature importance for X species
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize = (8, 5))
 
     plt.barh(
         importance["Variable"],
@@ -206,8 +199,8 @@ for species in top_species:
 
     plt.savefig(
         FIGURE_DIR_3 / f"{species}_feature_importance.png",
-        dpi=300,
-        bbox_inches="tight")
+        dpi = 300,
+        bbox_inches = "tight")
 
     plt.show()
 

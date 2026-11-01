@@ -30,17 +30,16 @@ PROCESSED_DATA_DIR = ROOT / "data" / "processed"
 FIGURE_DIR_EX = ROOT / "figures" / "exploration"
 FIGURE_DIR_EX.mkdir(parents=True, exist_ok=True)
 
-# Load data
 buds = pd.read_csv(PROCESSED_DATA_DIR / "buds.csv")
 plots = pd.read_csv(PROCESSED_DATA_DIR / "plots.csv")
 
 # Merge bud observations with plot data
 df = buds.merge(
     plots,
-    left_on="ID",
-    right_on="Name",
-    how="left",
-    validate="many_to_one")
+    left_on = "ID",
+    right_on = "Name",
+    how = "left",
+    validate = "many_to_one")
 
 
 
@@ -49,8 +48,8 @@ df = buds.merge(
 # bud counts by species
 species_counts = (
     buds.groupby("SP").agg(
-    Plant_Count=("SP", "size"),
-    Total_Buds=("buds", "sum"),
+    Plant_Count = ("SP", "size"),
+    Total_Buds = ("buds", "sum"),
     Mean_Buds = ("buds", "mean"))).round(2)
 
 print(f"\n{'-' * 50}\nPLANT AND BUD TOTALS PER SPECIES\n{'-' * 50}")
@@ -60,11 +59,10 @@ print(species_counts)
 # Bud count per plot
 bud_counts = (
     df.groupby("Plot").agg(
-        Plant_Count=("SP", "size"),
-        Total_Buds=("buds", "sum"),
-        Mean_Buds=("buds", "mean")
-    )
-).round(2)
+        Plant_Count = ("SP", "size"),
+        Total_Buds = ("buds", "sum"),
+        Mean_Buds = ("buds", "mean")
+    )).round(2)
 
 print(f"\n{'-' * 50}\nBUD COUNT PER PLOT\n{'-' * 50}")
 print(bud_counts)
@@ -84,7 +82,6 @@ plt.ylabel("Species")
 plt.title("Total Bud Count per Species")
 
 plt.tight_layout()
-
 
 plt.savefig(
     FIGURE_DIR_EX / "buds_per_species.png",

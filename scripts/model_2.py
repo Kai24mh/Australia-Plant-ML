@@ -32,7 +32,6 @@ ROOT = Path(__file__).resolve().parent.parent
 PROCESSED_DATA_DIR = ROOT / "data" / "processed"
 FIGURE_DIR_2 = ROOT / "figures" / "model_2"
 
-
 # Load data
 seeds = pd.read_csv(PROCESSED_DATA_DIR / "seeds.csv")
 species = pd.read_csv(PROCESSED_DATA_DIR / "species.csv")
@@ -79,8 +78,6 @@ environmental_features = [
     "Soil.Water",
     "Canopy.Cover"]
 
-
-# One-hot encode family
 family_data = pd.get_dummies(
     df["family"],
     prefix="Family",
@@ -96,11 +93,9 @@ df = pd.concat(
 family_features = family_data.columns.tolist()
 features = environmental_features + family_features
 
-# Remove rows missing required model data
 model_data = df.dropna(
     subset=features + ["Num.Seed", "Plot.ID"]).copy()
 
-# Define X, y, and groups
 X = model_data[features]
 y = model_data["Num.Seed"]
 groups = model_data["Plot.ID"]
@@ -135,18 +130,13 @@ for train_index, test_index in gkf.split(X, y, groups):
     y_train = y.iloc[train_index]
     y_test = y.iloc[test_index]
 
-
     # Create model
     model = RandomForestRegressor(
-        n_estimators=500,
-        random_state=42,
-        n_jobs=-1)
+        n_estimators = 500,
+        random_state = 42,
+        n_jobs = -1)
 
-
-    # Train model
     model.fit(X_train, y_train)
-
-    # Predict test data
     predictions = model.predict(X_test)
 
     # Performance metrics
@@ -158,7 +148,6 @@ for train_index, test_index in gkf.split(X, y, groups):
 
     rmse_scores.append(
         np.sqrt(mean_squared_error(y_test, predictions)))
-
 
     # Save feature importance from each fold
     feature_importances.append(
@@ -202,7 +191,7 @@ print(importance_df)
 
 """ PLOT FEATURE IMPORTANCE """
 
-plt.figure(figsize=(10, 8))
+plt.figure(figsize = (10, 8))
 
 plt.barh(
     importance_df["Variable"],
@@ -219,6 +208,6 @@ plt.tight_layout()
 plt.savefig(
     FIGURE_DIR_2 / "family_feature_importance.png",
     dpi=300,
-    bbox_inches="tight")
+    bbox_inches = "tight")
 
 plt.show()

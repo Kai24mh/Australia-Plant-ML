@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 PROCESSED_DATA_DIR = ROOT / "data" / "processed"
 FIGURE_DIR_1 = ROOT / "figures" / "model_1"
-FIGURE_DIR_1.mkdir(parents=True, exist_ok=True)
+FIGURE_DIR_1.mkdir(parents = True, exist_ok = True)
 
 # Load data
 seeds = pd.read_csv(PROCESSED_DATA_DIR / "seeds.csv")
@@ -52,9 +52,7 @@ df = seeds.merge(
     how="left",
     validate="many_to_one")
 
-
 print("Total seed observations:", len(df))
-
 unmatched = df["Plot"].isna().sum()
 print("Seed observations without matching plot data:", unmatched)
 
@@ -105,34 +103,30 @@ y = model_df[target]
 groups = model_df["Plot.ID"]
 
 
-
 # Numeric variables are left unchanged
 # Species is converted into one-hot encoded columns
 preprocessor = ColumnTransformer(
-    transformers=[
+    transformers = [
             ("numeric","passthrough", numeric_features),
             ("species", OneHotEncoder(
-                handle_unknown="ignore"),
+                handle_unknown = "ignore"),
             categorical_features)])
 
 
 
 """ RANDOM FOREST MODEL """
-
+ 
 rf_model = RandomForestRegressor(
     n_estimators=500,
     random_state=42,
     n_jobs=-1)
 
-
 # Combine preprocessing and Random Forest model
 model = Pipeline(
-    steps=[
+    steps = [
         ("preprocessor", preprocessor),
         ("random_forest", rf_model)])
 
-
-# Grouped cross-validation
 cv = GroupKFold(n_splits=5)
 
 scoring = {
@@ -164,10 +158,7 @@ print(f"Mean RMSE: {mean_rmse:.2f} seeds")
 model.fit(X, y)
 
 
-
-# Get feature names 
 feature_names = model["preprocessor"].get_feature_names_out()
-
 
 # Remove prefixes such as "numeric_" and "species_"
 feature_names = [
@@ -212,16 +203,14 @@ plt.xlim(-0.5, len(plot_importance) - 0.5)
 plt.xlabel("Predictor")
 plt.ylabel("Random Forest Importance")
 plt.title("Species and Environmental Predictors of Seed Production")
-
-#plt.gca().invert_yaxis()
 plt.tight_layout()
 
 
 # Save figure for interpretation
 plt.savefig(
     FIGURE_DIR_1 / "seeds_feature_importance.png",
-    dpi=300,
-    bbox_inches="tight")
+    dpi = 300,
+    bbox_inches = "tight")
 
 plt.show()
 

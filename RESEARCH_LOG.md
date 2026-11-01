@@ -7,10 +7,88 @@
 
 ---
 
+## **Table of Contents**
+
+- [1. Introduction](#1-project-overview)
+    - [1.1 Dissertation Background](#11-dissertation-background)
+    - [1.2 Initial Project Directions](#12-initial-project-directions)
+    - [1.3 Current Research Direction](#13-current-research-direction)
+- [2. Data](#2-data)
+    - [2.1 Individual Trait Data](#21-individual-trait-data)
+    - [2.2 Plot Condition Data](#22-plot-condition-data)
+    - [2.3 Seed Production Data](#23-seed-production-data)
+    - [2.4 Species Information Data](#24-species-information-data)
+- [3. Model 0 - Bud Production: Environmental Predictors](#3-model-0---bud-production-environmental-predictors)
+    - [3.1 Research Question](#31-research-question)
+    - [3.2 Data Preparation](#32-data-preparation)
+    - [3.3 Data Exploration](#33-data-exploration)
+    - [3.4 Predictors](#34-predictors)
+    - [3.5 Model Approach](#35-model-approach)
+    - [3.6 Results](#36-results)
+    - [3.7 Interpretation](#37-interpretation)
+    - [3.8 Discussion / Next Steps](#38-discussion--next-steps)
+- [4. Model 1 - Seed Production](#4-model-1---seed-production)
+    - [4.1 Research Question](#41-research-question)
+    - [4.2 Data Preparation](#42-data-preparation)
+    - [4.3 Data Exploration](#43-data-exploration)
+    - [4.4 Predictors](#44-predictors)
+    - [4.5 Model Approach](#45-model-approach)
+    - [4.6 Results](#46-results)
+    - [4.7 Interpretation](#47-interpretation)
+    - [4.8 Discussion / Next Steps](#48-discussion--next-steps)
+- [5. Model 2 — Seed Production: Family Groups + Environment](#5-model-2--seed-production-family-groups--environment)
+    - [5.1 Research Question](#51-research-question)
+    - [5.2 Data](#52-data)
+    - [5.3 Predictors](#53-predictors)
+    - [5.4 Model Approach](#54-model-approach)
+    - [5.5 Results](#55-results)
+    - [5.6 Interpretation](#56-interpretation)
+    - [5.7 Discussion / Next Steps](#57-discussion--next-steps)
+- [6. Model 3 — Seed Production: Individual Species](#6-model-3--seed-production-individual-species)
+    - [6.1 Research Questions](#61-research-question)
+    - [6.2 Data](#62-data)
+    - [6.3 Predictors](#63-predictors)
+    - [6.4 Model Approach](#64-model-approach)
+    - [6.5 Results](#65-results)
+    - [6.6 Discussion / Next Steps](#66-discussion--next-steps)
+- [7. Model 4 — Ecological Predictor Exploration and Evaluation](#7-model-4---ecological-predictor-exploration-and-evaluation)
+    - [7.1 Research Question](#71-research-question)
+    - [7.2 Data](#72-data)
+    - [7.3 Predictors](#73-predictors)
+        - [7.3.1 Original Environmental Predictors](#731-original-environmental-predictors)
+        - [7.3.2 Additional Ecological Predictors](#732-additional-ecological-predictors)
+    - [7.4 Model Approach](#74-model-approach)
+    - [7.5 Results](#75-results)
+        - [7.5.1 Seed Distribution and Outliers](#751-seed-distribution-and-outliers)
+        - [7.5.2 Relationships between Predictors and Seed Production](#752--relationships-between-predictors-and-seed-production)
+        - [7.5.3 Predictor Group Comparison](#753-predictor-group-comparison)
+        - [7.5.4 Prediction Errors and High-Seed Observations](#754-prediction-errors-and-high-seed-observations)
+        - [7.5.5 Predictor Importance](#755-predictor-importance)
+    - [7.6 Interpretation](#76-interpretation)
+    - [7.7 Discussion / Next Steps](#77-discussion--next-steps)
+- [8. Model 5 — Alternative Machine Learning Approaches](#8-model-5---alternative-machine-learning-approaches)
+    - [8.1 Research Question](#81-research-question)
+    - [8.2 Data](#82-data)
+    - [8.3 Predictors](#83-predictors)
+    - [8.4 Model Approach](#84-model-approach)
+    - [8.5 Results](#85-results)
+        - [8.5.1 Model 5a - Random Forest (Squared Error)](#851-model-5a---random-forest-squared-error)
+        - [8.5.2 Model 5b - Random Forest (Poisson)](#852-model-5b---random-forest-poisson)
+        - [8.5.3 Model 5c - Negative Binomial Regression](#853-model-5c---negative-binomial-regression)
+        - [8.5.4 Model 5d - Linear Regression](#854-model-5d---linear-regression)
+        - [8.5.5 Model 5e - Gradient Boosting](#855-model-5e---gradient-boosting)
+        - [8.5.6 Model 5f - Extra Trees](#856-model-5f---extra-trees)
+        - [8.5.7 Model 5g - K-Nearest Naighbors](#857-model-5g---k-nearest-neighbors)
+        - [8.5.8 Model Comparison](#858-model-comparison)
+    - [8.6 Interpretation](#86-interpretation)
+    - [8.7 Discussion / Conclusion](#87-discussion--conclusion)
+
+</br>
+
+---
 ## **1. Project Overview**
 
 ### **1.1 Dissertation Background**
-
 Dr. Martyn’s research examined how plant species interact with each other and their environment. Her work focused on how these interactions influence plant competition, community structure, and reproductive success.
 
 An important part of the dissertation was the study of higher-order interactions. Plant interactions are not always limited to the effects of one species on another. Instead, the presence of additional species can change how two species interact. This means that plant performance may depend on the larger community surrounding an individual.
@@ -21,12 +99,13 @@ The goal of this project was to use these existing datasets in a new way. Rather
 
 
 ### **1.2 Initial Project Directions**
-multiple proposed directions to analyze the dissertation data:
+Several potential research directions were considered for analyzing the dissertation data:
 
 - Spatial / point-pattern analysis: Use mapped plant locations to investigate clustering, competition, neighboring species, and whether spatial relationships were associated with reproductive success.
 - Long-term population analysis: Use the long-term seed-bank dataset to examine changes in species abundance and population dynamics over time, potentially using time-series or population-growth models such as Ricker models.
 - Machine-learning prediction: Develop a model that uses environmental and biological variables to predict some measure of plant success or reproductive output and identify which variables contribute most strongly to predictions.
 - Species interactions and biological groupings: Explore whether species interactions or broader classifications, such as functional or taxonomic groups, could help explain differences in plant performance.
+
 
 ### **1.3 Current Research Direction**
 The project currently focuses on using machine-learning approaches to examine patterns in plant reproductive output and determine how well reproductive success can be predicted from environmental and biological characteristics.
@@ -36,7 +115,6 @@ The analysis began with bud production as the response variable and environmenta
 The current modeling framework uses Random Forest regression with plot-grouped cross-validation. Models are being developed iteratively to evaluate different ways of representing biological variation, including species identity and broader species groupings, alongside plot-level environmental conditions.
 
 --- 
-
 ## **2. Data**
 
 ### **2.1 Individual Trait Data**
@@ -52,6 +130,7 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 - Fixed small date entry errors (process date was recorded a decade in the future)
 - Began with **1,387** entries, cleaned to **1,270**
 
+
 ### **2.2 Plot Condition Data**
 
 **Original file:** `Plot.DATA.06.09.2017.csv` </br>
@@ -62,6 +141,7 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 - No needed data cleaning
 - The file was renamed for easier identification and use in Python analyses
 - **100 entries**, one for each plot
+
 
 ### **2.3 Seed Production Data**
 
@@ -75,6 +155,7 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 - Converted relevant variables to numeric values for analysis
 - Began with **16,963** entries, cleaned to **13,485**
 
+
 ### **2.4 Species Information Data**
 
 **Original file:** `species_data.csv` </br>
@@ -83,20 +164,17 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 **Contains:** Species-level information, including species name, species code, life form, exotic status, taxonomic family, reserve occurrence, and additional notes </br>
 **Used for:** Providing taxonomic information for Model 2, where species are grouped by taxonomic family to evaluate whether broader taxonomic relationships improve predictions of seed production compared with using individual species identities. </br>
 **Cleaning performed:**
-- Known missing taxonomic was placed into a new csv file (`species_data_TEM_2026.csv`)
+- Missing taxonomic information was placed into a new csv file (`species_data_TEM_2026.csv`)
 - All matching values were placed into a new cleaned csv file (`species.csv`) for Model 2
 
-Two assumptions during cleaning: </br>
-
-
 ---
-
 ## **3. Model 0 - Bud Production: Environmental Predictors**
 
 ### **3.1 Research Question**
 Can plot-level environmental conditions be used to predict bud production at the individual plant level?
 
 The purpose of Model 0 was to establish an initial machine-learning approach for examining whether environmental variation among plots could explain differences in plant reproductive output.
+
 
 ### **3.2 Data Preparation**
 Model 0 used individual plant observations from `buds.csv` combined with plot-level environmental data from `plots.csv`. 
@@ -109,6 +187,7 @@ The final dataset used for Model 0 contained:
 - **Response variable:** `buds`
 
 **Data cleaning note:** An earlier version of the cleaned dataset contained 1,260 observations and produced a mean R² of -0.153. During data review, 10 observations were found to contain incorrect year entries and were restored, resulting in the final dataset of **1,270** observations.
+
 
 ### **3.3 Data Exploration**
 Exploratory analysis was conducted to examine species representation and differences in bud production before developing Model 0.
@@ -124,11 +203,12 @@ Bud production among the four species:
 
 <img src="figures/exploration/buds_per_species.png" width="500">
 
-The exploratory results showed substantial differences in bud production among the four species. Although observation counts were relatively similar among the four speciess, total and mean bud production varied considerably among species. This variation suggested that species identity could potentially account for some of the differences in individual reproductive output.
+The exploratory results showed substantial differences in bud production among the four species. Although observation counts were relatively similar among the four species, total and mean bud production varied considerably among species. This variation suggested that species identity could potentially account for some of the differences in individual reproductive output.
 
-Bud production was also examined across plots where it's production varied considerdably.
+Bud production was also examined across plots where bud production varied considerdably.
 
 <img src="figures/exploration/buds_per_plot.png" width="600">
+
 
 ### **3.4 Predictors**
 Six plot-level environmental variables were selected as predictors:
@@ -141,6 +221,7 @@ Six plot-level environmental variables were selected as predictors:
 - `Canopy.Cover` — canopy cover
 
 Species identity was **not** included as a predictor in Model 0. The purpose of this initial model was to determine how well environmental conditions alone could predict individual bud production.
+
 
 ### **3.5 Model Approach**
 A **Random Forest Regressor** was used to predict the number of buds produced by each individual plant.
@@ -156,6 +237,7 @@ Model performance was evaluated using:
 - **RMSE** — measure of prediction error that gives greater weight to larger errors
 
 Random Forest feature importance was also used to compare the relative contribution of the six environmental predictors.
+
 
 ### **3.6 Results**
 
@@ -208,13 +290,13 @@ A larger seed-production dataset (`seeds.csv`) was available that contained subs
 Based on these limitations, the project shifted from bud production to seed production as the primary response variable. The next model, Model 1, used `Num.Seed` as the response and expanded the predictor set to include species identity alongside the environmental variables. This transition allowed the analysis to test whether accounting for differences among species could improve predictions of reproductive output while retaining the environmental predictors examined in Model 0.
 
 ---
-
 ## **4. Model 1 - Seed Production**
 
 ### **4.1 Research Question**
 Can seed production at the individual observation level be predicted using species identity and plot-level environmental conditions?
 
-Model 1 applies the machine-learning framework established in Model 0 to the larger seed-production dataset. Unlike Model 0, which examined bud production, Model 1 uses seed production as the response variable and incorporates species identity alongside plot-level environmental predictors
+Model 1 applies the machine-learning framework established in Model 0 to the larger seed-production dataset. Unlike Model 0, which examined bud production, Model 1 uses seed production as the response variable and incorporates species identity alongside plot-level environmental predictors.
+
 
 ### **4.2 Data Preparation**
 Model 1 used seed-production data from `seeds.csv` and plot-level environmental data from `plots.csv`. 
@@ -228,6 +310,7 @@ The final dataset used for Model 1 contained:
 - **13,485 observations**
 - **100 plots**
 - **70 species**
+
 
 ### **4.3 Data Exploration**
 
@@ -271,6 +354,7 @@ VERO, ARCA, and PEAI were particularly well represented, with more than 2,400 ob
 
 Seed production also differed substantially among species. For example, PEAI averaged **149.79 seeds per observation**, while VERO averaged **18.47** despite having the largest number of observations. POCA also had relatively high seed production, averaging **142.79 seeds** per observation. These differences in seed production among species suggested that species identity could account for some of the variation not captured by plot-level environmental conditions alone..
 
+
 ### **4.4 Predictors**
 Model 1 included both biological and environmental predictors.
 
@@ -289,6 +373,7 @@ The same six plot-level environmental predictors examined in Model 0 were retain
 
 Because species identity is categorical, it was one-hot encoded into separate species-specific predictor variables for use in the Random Forest model.
 
+
 ### **4.5 Model Approach**
 A **Random Forest Regressor** was used to predict `Num.Seed` using species identity and the six environmental predictors.
 
@@ -300,6 +385,7 @@ Performance was evaluated using:
 - **RMSE** — measure of prediction error that gives greater weight to larger errors
 
 Random Forest feature importance was also calculated to examine the relative contribution of species identity and environmental conditions to model predictions.
+
 
 ### **4.6 Results**
 
@@ -346,6 +432,7 @@ Species identity also contributed to model predictions, with Species_PEAI rankin
 
 The feature importance results also suggest that environmental conditions remained relevant to model predictions. Soil water and soil phosphorus were the two highest-ranking predictors. However, because overall predictive performance remained poor, feature importance should be interpreted cautiously and should not be considered evidence of direct ecological effects.
 
+
 ### **4.8 Discussion / Next Steps**
 Although adding species identity provided more biological information than Model 0, Model 1 still had limited predictive ability. The model also introduced a new challenge: representing a large number of individual species as separate predictors.
 
@@ -361,17 +448,15 @@ Potential next steps included exploring alternative ways to represent species-le
 The next model therefore investigates whether species can be represented using broader biological groupings rather than treating each species as completely independent.
 
 ---
-
 ## **5. Model 2 — Seed Production: Family Groups + Environment**
 
 ### **5.1 Research Question**
-
 Can seed production at the individual observation level be predicted using taxonomic family and plot-level environmental conditions?
 
 Model 2 builds on Model 1 by replacing individual species identity with broader taxonomic family groups. Model 1 represented each of the 70 species as an independent categorical predictor, while Model 2 groups species that belong to the same taxonomic family. This approach investigates whether broader taxonomic relationships can represent biological variation in seed production while reducing the number of categorical predictors included in the model.
 
-### **5.2 Data**
 
+### **5.2 Data**
 Model 2 used seed-production data from `seeds.csv`, taxonomic information from `species.csv`, and plot-level environmental data from `plots.csv`.
 
 Species information was matched to the species represented in the seed-production dataset during previous data preparation. Known differences in species identifiers between the original seed and species-information datasets were standardized before creation of `species.csv`.
@@ -393,8 +478,8 @@ The final dataset used for Model 2 contained:
 - **100 plots**
 - **22 taxonomic families**
 
-### **5.3 Predictors**
 
+### **5.3 Predictors**
 Model 2 included both taxonomic and environmental predictors.
 
 Taxonomic family was included as a categorical predictor: </br>
@@ -413,8 +498,8 @@ Because taxonomic family is categorical, it was one-hot encoded into separate fa
 
 After one-hot encoding, the model contained **28 predictors**: 22 family-level predictors and six environmental predictors.
 
-### **5.4 Model Approach**
 
+### **5.4 Model Approach**
 A **Random Forest Regressor** was used to predict `Num.Seed` using taxonomic family and the six environmental predictors.
 
 The modeling framework was kept consistent with Model 1 so that the effect of changing the biological grouping could be evaluated while maintaining the same general modeling approach.
@@ -430,6 +515,7 @@ Performance was evaluated using:
 Random Forest feature importance was also calculated and averaged across the cross-validation folds to examine the relative contribution of taxonomic family and environmental conditions to model predictions.
 
 Because the response variable, environmental predictors, modeling algorithm, and cross-validation strategy were kept consistent with Model 1, Model 2 provides a direct comparison between representing biological variation using individual species and broader taxonomic families.
+
 
 ### **5.5 Results**
 
@@ -468,15 +554,14 @@ Environmental variables accounted for most of the highest-ranking predictors. Pe
 
 
 ### **5.6 Interpretation**
-
 Model 2 had poor predictive performance, with a mean R² of -0.153. Performance was also worse than Model 1, which had a mean R² of -0.012. This suggests that grouping species by taxonomic family did not improve the model's ability to predict seed production in unseen plots.
 
 Environmental variables remained the highest-ranking predictors, particularly percent bare ground, soil phosphorus, and soil water. Poaceae was the highest-ranking family predictor, while most other families had relatively low feature importance.
 
 Grouping species by family may remove important differences among individual species. Although species within the same family are taxonomically related, they may still differ substantially in seed production and their responses to environmental conditions.
 
-### **5.7 Decisions / Next Steps**
 
+### **5.7 Discussion / Next Steps**
 Model 2 reduced the number of biological categories from 70 species to 22 families, but this simplification did not improve predictive performance. Grouping species into broader taxonomic categories may have removed some of the species-level differences that are important for understanding variation in seed production.
 
 The results from Models 1 and 2 suggest that combining many species within a single model may not be the most effective approach. Species vary considerably in both their number of observations and their seed production, which may make it difficult for a single model to represent these differences.
@@ -486,7 +571,6 @@ Model 3 will therefore focus on the most frequently recorded species and model e
 This approach will remove differences among species from within each model and allow Model 3 to focus specifically on whether plot-level environmental conditions can predict variation in seed production within individual species. Model performance and feature importance can then be compared across the selected species.
 
 ---
-
 ## **6. Model 3 — Seed Production: Individual Species**
 
 ### **6.1 Research Question**
@@ -495,12 +579,12 @@ Can plot-level environmental conditions better predict seed production when mode
 
 Model 3 investigates seed production separately within individual species. By removing variation associated with species identity, these models examine whether environmental conditions can predict seed production more effectively within a single species. The models also allow environmental feature importance to be compared across species.
 
-
 The analysis was conducted using four species-specific models. **Model 3a** focused on **VERO**, the most frequently represented species in the seed dataset and an original focus of the dissertation. The same modeling approach was then independently applied to **ARCA (Model 3b), PEAI (Model 3c), and POCA (Model 3d)**. These were the next three most frequently represented species in the dataset.
 
 Model 3 is framed to investigate two questions:
 1. How well does the Random Forest predict seed production for each species?
 2. Does the relative importance of environmental predictors differ among VERO, ARCA, PEAI, and POCA?
+
 
 ### **6.2 Data**
 Model 3 used the same cleaned seed-production and plot-level environmental datasets used for Model 1.
@@ -522,6 +606,7 @@ Together, these four species accounted for 8,970 of the 13,485 observations in t
 
 Restricting the analysis to these species allowed environmental relationships to be examined within individual species while retaining substantially larger sample sizes than were available for most other species in the dataset.
 
+
 ### **6.3 Predictors**
 Model 3 used the same six plot-level environmental predictors examined in Models 0 and 1:
 
@@ -533,6 +618,7 @@ Model 3 used the same six plot-level environmental predictors examined in Models
 - `Canopy.Cover` — canopy cover
 
 Species identity was not included as a predictor because each model was restricted to observations from a single species. This allowed Model 3 to focus specifically on whether variation in environmental conditions could explain differences in seed production within each species.
+
 
 ### **6.4 Model Approach**
 A **Random Forest Regressor** was used to predict `Num.Seed` from the six environmental predictors.
@@ -555,10 +641,10 @@ Model performance was evaluated using:
 
 Random Forest feature importance was also calculated separately for each species. This allowed both model performance and the relative importance of environmental predictors to be compared among VERO, ARCA, PEAI, and POCA.
 
+
 ### **6.5 Results**
 
 #### **6.5.1 Model 3a - VERO**
-
 VERO was represented by **3,027 observations across 46 plots**. However, observations were unevenly distributed among plots, with several plots containing substantially more VERO observations than others.
 
 <img src="figures/model_3/VERO_observations_per_plot.png" width="800">
@@ -632,7 +718,6 @@ Feature importance also remained broadly similar after the two plots were remove
 
 
 #### **6.5.2 Model 3b - ARCA**
-
 ARCA was well represented across the dataset, but observations were unevenly distributed among plots. Several plots contained relatively large numbers of ARCA observations, while many others contained only a small number.
 
 <img src="figures/model_3/ARCA_observations_per_plot.png" width="800">
@@ -706,7 +791,6 @@ The sensitivity analysis suggests that Plot 56 influences the relative importanc
 
 
 #### **6.5.3 Model 3c - PEAI**
-
 PEAI observations were distributed across many plots, although sampling was highly uneven. Plot 24 contained substantially more observations than any other plot.
 
 <img src="figures/model_3/PEAI_observations_per_plot.png" width="800">
@@ -740,7 +824,7 @@ Unlike VERO, no single environmental variable overwhelmingly dominated the PEAI 
 | Canopy.Cover | 0.049 |
 | Per.Woody | 0.031 |
 
-<img src="figures/model_3/PEAI_feature_importance.png" width="600">
+</br><img src="figures/model_3/PEAI_feature_importance.png" width="600">
 
 Despite these differences in relative importance, the negative R² indicates that the environmental predictors did not generalize well enough to reliably predict PEAI seed production across unseen plots. The high variability in PEAI seed counts may have contributed to the model's difficulty in producing accurate predictions.
 
@@ -794,7 +878,6 @@ The sensitivity analysis indicates that the unusual PEAI distribution had a subs
 
 
 #### **6.5.4 Model 3d - POCA**
-
 POCA observations were spread across multiple portions of the study plots, with higher concentrations occurring in several plots in the 80–100 range. Compared with PEAI, no single plot overwhelmingly dominated the number of observations.
 
 <img src="figures/model_3/POCA_observations_per_plot.png" width="800">
@@ -831,7 +914,7 @@ Soil phosphorus was the highest-ranked predictor for POCA (0.303), followed by c
 <img src="figures/model_3/POCA_feature_importance.png" width="600">
 
 
-#### Outliars
+#### Outliers
 
 Exploration of POCA seed production identified Plot 81 as having unusually high seed production relative to the remaining plots.
 
@@ -872,13 +955,12 @@ Overall, the sensitivity analysis indicates that Plot 81 had a substantial influ
 
 
 #### **6.5.5 Comparison Across Species**
-
-#### Feature importance
+#### Model Performance Comparison
 
 | Species| Observations | Plots | R² | MAE | RMSE |
 | --- |--- |--- |--- |--- | ---: |
 | VERO | 3027 | 46 | -0.366 | 18.13 | 22.92 |
-| ARCE | 2515 | 61 | -0.732 | 69.87 | 99.35 |
+| ARCA | 2515 | 61 | -0.732 | 69.87 | 99.35 |
 | PEAI | 2485 | 74 | -0.591 | 154.67 | 265.22 |
 | POCA | 943 | 71 | -0.321 | 174.48 | 241.36 |
 
@@ -890,37 +972,460 @@ The number of observations also did not correspond directly with model performan
 
 Overall, separating the dataset by species did not resolve the poor predictive performance observed in the broader seed-production models. Although the strength and relative importance of environmental predictors differed among species, the consistently negative R² values suggest that the six plot-level environmental variables alone did not capture enough of the variation in individual seed production to generalize reliably across plots.
 
-### **6.6 Decisions / Next Steps**
 
+### **6.6 Discussion / Next Steps**
 The next stage of the project will focus specifically on **VERO** rather than continuing to model multiple species. VERO was a primary species of interest in the original dissertation and was well represented within the available dataset, with 3,027 observations across 46 plots. Focusing on VERO also reduces concerns associated with differences in how other species were represented during data collection. For example, the PEAI analysis showed that uneven representation among plots could have a substantial influence on model performance.
 
-The next step will also investigate the effect of the cross-validation approach. Models 0–3 used GroupKFold by plot, meaning that all observations from a plot were kept together and a model was tested only on plots that were completely absent from its training data. This provides a strict test of whether the model can generalize to new plots.
+The next step will focus on **evaluating and expanding the predictors used to model VERO seed production**. Models 0–3 relied primarily on six environmental variables: litter cover, bare ground, woody vegetation, soil phosphorus, soil water, and canopy cover. Although these variables describe important environmental conditions, they do not directly account for the surrounding plant community or potential interactions among species.
 
-However, the environmental predictors used in these models are measured at the plot level. Although thousands of individual plant observations are available, plants from the same plot share the same environmental predictor values. Grouping cross-validation by plot therefore limits the number of unique environmental conditions available for training and testing.
+To address this limitation, additional ecological predictors will be developed using the available plot-level and species data. These will include measures of species diversity, functional composition, taxonomic composition, and potential competition. For example, the number of individuals within a plot may provide information about plant density and competitive pressure, while species diversity and functional group proportions may help describe differences in community structure.
 
-As an exploratory comparison, the VERO model will be tested using standard KFold cross-validation without grouping by plot. This allows individual observations from the same plot to occur in both the training and testing sets and evaluates prediction at the individual-observation level rather than requiring generalization to completely unseen plots.
+The expanded predictor dataset will then be explored to identify relationships with VERO seed production. This will involve examining the distribution of seed counts, identifying extreme observations, investigating variation among plots, and evaluating correlations between seed production and the environmental and ecological predictors. Particular attention will be given to understanding whether unusually high seed counts represent meaningful ecological variation rather than observations that should automatically be excluded.
 
-This approach has an important limitation. Because observations from the same plot share environmental predictor values, the model may be tested on plants with the same environmental conditions that were already represented in its training data. Performance from standard KFold may therefore appear better than performance under GroupKFold and should not be interpreted as evidence that the model can predict seed production in new plots.
+Following this exploratory analysis, different groups of predictors will be evaluated to determine whether incorporating community-level information improves predictive performance compared with the original environmental variables alone. The effects of outlier treatment and response-variable transformations will also be investigated to better understand how the distribution of seed production influences model performance.
 
-The two cross-validation approaches will therefore be treated as answering different questions rather than as competing methods. GroupKFold evaluates generalization to previously unseen plots, while KFold evaluates prediction of individual observations within the environmental conditions represented in the sampled plots. Comparing the two will help determine how strongly the plot-level grouping structure affects model performance before additional VERO-specific modeling approaches are explored.
-
-
-## **7. Model 4 - VERO Seed Production by Kfold**
-
-### **7.1 Research Question**
-
-### **7.2 Data**
-
-### **7.3 Predictors**
-
-### **7.4 Model Approach**
-
-### **7.5 Results**
-
-### **7.6 Interpretation**
-
-### **7.7 Decisions / Next Steps**
+The overall goal of this next stage is to **identify which ecological characteristics provide the most useful information for predicting VERO seed production**. Establishing a more informative set of predictors will provide a foundation for subsequent comparisons of machine-learning algorithms and further refinement of the VERO models..
 
 
 ---
+## **7. Model 4 - Ecological Predictor Exploration and Evaluation**
 
+### **7.1 Research Question**
+How do extreme individual VERO seed counts and additional plot-level ecological predictors affect Random Forest predictions of seed production?
+
+Model 4 focuses specifically on VERO, which was selected for continued analysis because it was a primary species of interest in the original dissertation and was well represented in the seed dataset.
+
+Model 3 used a Random Forest with GroupKFold cross-validation, where observations were grouped by plot. Model 4 builds on this approach by investigating the influence of extreme seed counts, evaluating additional ecological predictors, and comparing model performance using both GroupKFold and standard KFold cross-validation.
+
+Model 4 is framed to investigate four questions:
+
+1. How are extreme VERO seed counts distributed across plots, and are they associated with particular environmental conditions?
+2. Do additional ecological predictors, including species richness, individual abundance, elevation, and beta diversity, improve predictions of VERO seed production?
+3. How do outlier filtering and log transformation of seed counts affect Random Forest predictive performance?
+4. How does model performance differ between GroupKFold and standard KFold cross-validation?
+
+
+### **7.2 Data**
+
+Model 4 focuses exclusively on VERO, using 3,027 individual observations across 46 plots.
+
+The analysis combines three datasets:
+- `seeds.csv`: Individual seed production and species identification.
+- `plots.csv`: Plot-level environmental conditions.
+- `species.csv`: Species characteristics, including life form, family, and origin.
+
+These datasets are used to create an expanded dataset containing both the original environmental variables and additional ecological predictors.
+
+
+### **7.3 Predictors**
+
+#### **7.3.1 Original Environmental Predictors**
+
+The six environmental predictors used in previous models are retained:
+
+- `Per.Litt` — percent litter cover
+- `Per.Bare` — percent bare ground
+- `Per.Woody` — percent woody cover
+- `Soil.P` — soil phosphorus
+- `Soil.Water` — soil water
+- `Canopy.Cover` — canopy cover
+
+#### **7.3.2 Additional Ecological Predictors**
+
+New predictors are created to describe the surrounding plant community and potential competition.
+
+- `Species Diversity` — Species richness, Shannon diversity, Simpson diversity, and evenness
+- `Functional Composition` — Proportions and diversity of plant life forms
+- `Family Composition` — Proportions of different plant families
+- `Species Composition` — Relative representation of individual species
+- `Competition` — Measures of plant abundance, density, and potential competition
+- `Community Composition` — Measures describing differences in species composition among plots
+
+These predictors are intended to capture ecological characteristics not represented by the original environmental variables.
+
+
+### **7.4 Model Approach**
+
+Model 4 is divided into four stages:
+
+**Model 4a — Predictor Creation**
+The original datasets are combined to calculate additional plot-level ecological predictors. These include measures of diversity, functional composition, taxonomic composition, and competition.
+
+**Model 4b — Exploratory Analysis**
+VERO seed production is examined to understand its distribution, identify extreme observations, and investigate relationships with the ecological predictors. Correlations are evaluated at the plot level to avoid treating repeated plot measurements as independent observations.
+
+**Model 4c — Predictor Group Comparison**
+Random Forest models are used to compare seven predictor groups:
+
+1. Baseline environmental predictors
+2. Functional composition
+3. Family composition
+4. Species composition
+5. Diversity
+6. Competition
+7. Combined ecological predictors
+
+Each group is evaluated using three approaches to the response variable: original seed counts, IQR-based outlier filtering, and log-transformed seed counts.
+
+Both KFold and GroupKFold cross-validation are tested to examine how the validation method affects model performance.
+
+**Model 4d — Results and Diagnostics**
+The results are examined in greater detail to identify the most useful predictors and investigate prediction errors. This includes examining high-seed observations, differences among plots, and permutation feature importance.
+
+
+### **7.5 Results**
+
+#### **7.5.1 Seed Distribution and Outliers**
+The distribution of individual VERO seed counts was examined using the interquartile range (IQR) method. Observations falling below Q1 − 1.5 × IQR or above Q3 + 1.5 × IQR were identified as potential outliers.
+
+VERO seed production was right-skewed, with most individuals producing relatively few seeds and a smaller number producing substantially higher counts.
+
+| Statistic | Value |
+| --- | ---: |
+| Observations | 3,027 |
+| Mean seed count | 18.47 |
+| Median seed count | 14 |
+| Standard deviation | 20.12 |
+| Maximum seed count | 184 |
+| Zero-seed observations | 93 |
+| IQR outliers | 210 (6.94%) |
+
+<img src="figures/model_4/model_4b/iqr_outliers.png" width="600">
+
+Using the IQR method, seed counts above 48.5 were identified as potential outliers. These observations were retained during exploratory analysis because unusually high seed production may represent meaningful ecological variation.
+
+#### **7.5.2  Relationships Between Predictors and Seed Production**
+Plot-level correlation analysis identified several ecological predictors associated with mean VERO seed production.
+
+| Predictor | Spearman correlation |
+| --- | ---: |
+| Family_Prop_Poaceae | +0.605 |
+| SpeciesProp_PEAI | +6.04 |
+| LifeForm_Prop_annual.forb | -0.599 |
+| LifeForm_Prop_annual.graminoid | +0.583 |
+| LifeForm_Shannon | +0.576 |
+
+<img src="figures/model_4/model_4b/relationship_LifeForm_Shannon.png" width="500">
+
+These results suggest that plant community composition, particularly the representation of different functional groups, may be associated with VERO seed production.
+
+However, correlations do not necessarily indicate that these predictors will improve model performance.
+
+#### **7.5.3 Predictor Group Comparison**
+Model 4c evaluated 42 configurations across seven predictor groups, three response-variable treatments, and two cross-validation methods.
+
+The strongest GroupKFold configuration used functional predictors with log-transformed seed counts.
+
+| Configuration | R² | MAE | RMSE |
+| --- | --- | --- | ---: |
+| GroupKFold – Baseline, Original | -0.389 | 18.29 | 23.06 |
+| GroupKFold – Functional, Log1p | 0.040 | 12.34 | 19.48 | 
+| KFold – Combined, Original | 0.199 | 10.83 | 17.91 |
+
+</br><img src="figures/model_4/analysis/predictor_group_comparison.png" width="600">
+
+The results indicate that functional predictors and response-variable treatment can influence predictive performance. Standard KFold generally produced stronger results than GroupKFold, although the methods evaluate different prediction settings.
+
+#### **7.5.4 Prediction Errors and High-Seed Observations**
+
+Further analysis of the selected GroupKFold configuration showed that the model struggled to predict individuals with unusually high seed production.
+
+| Observation Group | Observed Mean | Predicted Mean | MAE |
+| --- | --- | --- | ---: |
+| High-seed observations (210) | 75.93 | 19.04 | 56.89 |
+| Remaining observations (2,817) | 14.19 | 15.20 | 9.02 |
+
+<img src="figures/model_4/analysis/observed_vs_predicted.png" width="500">
+
+The model substantially underestimated high-seed observations, suggesting that the available ecological predictors do not fully explain extreme seed production.
+
+#### **7.5.5 Predictor Importance**
+
+Permutation importance was used to evaluate which predictors contributed most to the selected model's predictive performance.
+
+The highest-ranked predictors were:
+
+| Predictor | Permutation Importance |
+| --- | ---: |
+| LifeForm_Shannon | +0.0167 |
+| LifeForm_Prop_annual.graminoid | +0.0156 |
+| LifeForm_Prop_annual.forb | +0.0129 |
+| Soil.Water | +0.0081 |
+| Per.Bare | +0.0048 |
+
+</br><img src="figures/model_4/analysis/permutation_importance.png" width="600">
+
+Functional diversity and composition were the most influential predictors in this analysis.
+
+
+### **7.6 Interpretation**
+Model 4 suggests that plant community characteristics provide useful information for predicting VERO seed production. In particular, functional diversity and the proportions of annual forbs and annual graminoids were among the most influential predictors.
+
+However, overall predictive performance remained limited, especially when models were evaluated on previously unseen plots. High-seed observations were also consistently underestimated, indicating that substantial variation in individual seed production remains unexplained.
+
+The results suggest that adding ecological predictors can improve model performance, but the usefulness of these predictors depends on the modeling approach and evaluation method.
+
+
+### **7.7 Discussion / Next Steps**
+Based on the results of Model 4, the next stage will retain the six original environmental predictors and three additional functional predictors:
+
+- LifeForm_Shannon
+- LifeForm_Prop_annual.graminoid
+- LifeForm_Prop_annual.forb
+
+These predictors were selected because they showed the strongest positive permutation importance in Model 4d.
+
+**Model 5 will focus on comparing different machine-learning algorithms** using this fixed set of nine predictors. This will help determine whether alternative modeling approaches can improve VERO seed production predictions beyond the Random Forest models evaluated in Model 4.
+
+All valid observations, including high-seed counts, will be retained because extreme seed production may represent meaningful ecological variation.
+
+
+---
+## **8. Model 5 - Alternative Machine Learning Approaches**
+
+### **8.1 Research Question**
+
+How does the predictive performance of different machine learning algorithms and count-based regression approaches compare when predicting VERO seed production using the environmental and ecological predictors selected from Model 4?
+
+Model 4 investigated the relationships between VERO seed production and additional ecological predictors, including functional composition, species diversity, and competitive context.
+
+Based on these analyses, Model 5 uses a selected set of environmental and functional predictors to compare alternative modeling approaches.
+
+Model 5 addresses two primary questions:
+1. Do alternative machine learning algorithms improve predictions of VERO seed production compared with Random Forest?
+2. Do regression approaches designed for count outcomes improve predictive performance compared with conventional regression methods?
+
+
+### **8.2 Data**
+Model 5 uses the expanded VERO dataset created during Model 4, combining individual seed production with environmental and ecological predictors.
+
+| Species | Observations | Number of Plots |
+| --- | ---: | ---: |
+| VERO | 3,027 | 46 |
+
+The response variable remains `Num.Seed`, representing the number of seeds recorded for an individual observation.
+
+All observations were retained, including extreme seed counts identified during the exploratory analysis in Model 4.
+
+Restricting the analysis to VERO allowed different modeling approaches to be compared using the same observations and predictor variables.
+
+
+### **8.3 Predictors**
+Model 5 uses nine predictors, consisting of the six original environmental variables and three functional predictors selected from Model 4.
+
+**Environmental Predictors**
+- `Per.Litt` — percent litter cover
+- `Per.Bare` — percent bare ground
+- `Per.Woody` — percent woody cover
+- `Soil.P` — soil phosphorus
+- `Soil.Water` — soil water
+- `Canopy.Cover` — canopy cover
+
+**Functional Predictors**
+- `LifeForm_Shannon` — Shannon diversity of plant functional groups within a plot
+- `LifeForm_Prop_annual.graminoid` — Proportion of individuals classified as annual graminoids
+- `LifeForm_Prop_annual.forb` — Proportion of individuals classified as annual forbs
+
+These predictors were selected following Model 4d, where functional diversity and composition demonstrated positive permutation importance in predicting VERO seed production.
+
+Species identity was not included as a separate predictor because the analysis was restricted to VERO.
+
+Using the same nine predictors for every algorithm allowed differences in predictive performance to be evaluated without introducing differences in predictor selection.
+
+
+### **8.4 Model Approach**
+Model 5 compared seven regression approaches:
+
+- **Random Forest:** An ensemble of decision trees using a squared-error splitting criterion to predict continuous seed counts.
+- **Random Forest (Poisson):** The same general Random Forest approach, but using a Poisson deviance splitting criterion designed for nonnegative count responses. This is not a full probabilistic Poisson regression model.
+- **Negative Binomial Regression:** A count regression approach that allows the variance of seed counts to exceed their mean. This is a separate regression method, not a Negative Binomial Random Forest.
+- **Linear Regression:** A linear baseline that models seed counts as a function of the environmental predictors.
+- **Gradient Boosting:** A sequential ensemble of decision trees in which successive trees improve on earlier predictions.
+- **Extra Trees:** A randomized tree ensemble that introduces additional randomness when selecting tree splits.
+- **K-Nearest Neighbors:** A distance-based method that predicts using observations with similar predictor values.
+
+All seven approaches were evaluated using **5-fold standard KFold cross-validation**, with shuffled folds and a fixed random seed (random_state=42).
+
+Unlike GroupKFold, standard KFold does not group observations by plot. Consequently, observations from the same plot may occur in both training and testing datasets.
+
+Because the predictors are measured at the plot level, this approach evaluates prediction among held-out individual observations rather than generalization to entirely unseen plots.
+
+Model performance was evaluated using:
+
+- **R²** — proportion of variation in seed production explained by the model
+- **MAE** — mean absolute difference between observed and predicted seed counts
+- **RMSE** — measure of prediction error that gives greater weight to larger errors
+
+
+### **8.5 Results**
+
+#### **8.5.1 Model 5A - Random Forest (Squared Error)**
+Random Forest was evaluated using the expanded predictor set to establish a comparison with the alternative algorithms.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.200 |
+| Mean MAE | 10.83 seeds |
+| Mean RMSE | 17.90 seeds |
+
+Random Forest produced a mean R² of **0.200**, an MAE of **10.83 seeds**, and an RMSE of **17.90 seeds**.
+
+The positive R² indicates that the model performed better than a mean-based prediction baseline under standard KFold cross-validation.
+
+Random Forest was among the strongest-performing approaches, although its results were similar to those of the other tree-based ensemble models.
+
+
+#### **8.5.2 Model 5B - Random Forest Poisson**
+Random Forest was also evaluated using the **Poisson splitting criterion**, which changes how decision-tree splits are selected for the nonnegative seed-count response. This was tested to determine whether a count-oriented splitting criterion would improve performance compared with the original squared-error Random Forest.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.199 |
+| Mean MAE | 10.83 seeds |
+| Mean RMSE | 17.90 seeds |
+
+Poisson Random Forest produced a mean R² of **0.199**, an MAE of **10.83 seeds**, and an RMSE of **17.90 seeds**.
+
+Performance was nearly identical to that of the squared-error Random Forest.
+
+Changing the splitting criterion therefore did not meaningfully improve predictive performance.
+
+
+#### **8.5.3 Model 5C - Negative Binomial Regression**
+Negative Binomial Regression was tested because seed production is a count response and may exhibit overdispersion, where variance exceeds the mean. Unlike the Random Forest models, Negative Binomial Regression uses a parametric count-regression framework.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.111 |
+| Mean MAE | 11.82 seeds |
+| Mean RMSE | 18.85 seeds |
+
+Negative Binomial Regression produced a mean R² of **0.111**, an MAE of **11.82 seeds**, and an RMSE of **18.85 seeds**.
+
+Although the model achieved positive predictive performance, it performed worse than the leading tree-based ensemble approaches across all three metrics.
+
+These results suggest that the Negative Binomial specification tested did not provide an advantage over the leading machine learning algorithms.
+
+
+#### **8.5.4 Model 5D - Linear Regression**
+Linear Regression was tested as a simpler alternative to the tree-based machine learning approaches.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.135 |
+| Mean MAE | 11.74 seeds |
+| Mean RMSE | 18.62 seeds |
+
+Linear Regression produced a mean R² of **0.135**, an MAE of **11.74 seeds**, and an RMSE of **18.62 seeds**.
+
+Although Linear Regression achieved positive R², its predictive performance was weaker than that of Random Forest, Gradient Boosting, and Extra Trees.
+
+This suggests that the relationships between the selected predictors and VERO seed production may not be fully represented by simple linear relationships.
+
+
+#### **8.5.5 Model 5E - Gradient Boosting**
+Gradient Boosting was tested as an alternative tree-based ensemble approach.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.203 |
+| Mean MAE | 10.83 seeds |
+| Mean RMSE | 17.97 seeds |
+
+Gradient Boosting produced a mean R² of **0.203**, an MAE of **10.83 seeds**, and an RMSE of **17.87 seeds**.
+
+Gradient Boosting achieved the highest mean R² and lowest mean RMSE among the seven approaches.
+
+However, its performance was nearly identical to Random Forest and Extra Trees, indicating that the leading tree-based ensembles provided comparable predictive accuracy.
+
+
+#### **8.5.6 Model 5F - Extra Trees**
+Extra Trees was tested as another tree-based ensemble approach.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | 0.198 |
+| Mean MAE | 10.84 seeds |
+| Mean RMSE | 17.92 seeds |
+
+Extra Trees produced a mean R² of **0.198**, an MAE of **10.84 seeds**, and an RMSE of **17.92 seeds**.
+
+Performance was very similar to Random Forest and Gradient Boosting.
+
+The similarity among these approaches suggests that the choice between the tested tree-based ensembles had relatively little effect on predictive performance.
+
+
+#### **8.5.7 Model 5G - K-Nearest Neighbors**
+K-Nearest Neighbors (KNN) was tested as a non-tree-based machine learning approach.
+
+| Metric | Value |
+| --- | ---: |
+| Mean R² | -0.072 |
+| Mean MAE | 13.77 seeds |
+| Mean RMSE | 20.60 seeds |
+
+KNN produced a negative mean R² of **−0.072**, indicating that its predictions performed worse than a mean-based baseline under the evaluation used.
+
+The model also produced the largest prediction errors, with an MAE of **13.77 seeds** and an RMSE of **20.60 seeds**.
+
+These results suggest that KNN was not well suited to predicting VERO seed production using the selected predictors and model settings.
+
+
+#### **8.5.8 Model Comparison**
+
+| Model | R² | MAE | RMSE |
+| --- | ---: | ---: | ---: |
+| Gradient Boosting | **0.203** | **10.83** | **17.87** |
+| Random Forest (Squared Error) | 0.200 | 10.83 | 17.90 |
+| Random Forest (Poisson) | 0.199 | 10.83 | 17.90 |
+| Extra Trees | 0.198 | 10.84 | 17.92 |
+| Linear Regression | 0.135 | 11.74 | 18.62 |
+| Negative Binomial Regression | 0.111 | 11.82 | 18.85 |
+| K-Nearest Neighbors | -0.072 | 13.77 | 20.60 |
+
+Gradient Boosting achieved the highest mean R² and lowest RMSE, but differences among the four tree-based ensemble approaches were minimal. All four produced mean R² values of approximately **0.20**.
+
+Linear Regression and Negative Binomial Regression produced lower positive R² values, while KNN was the only algorithm with a negative mean R².
+
+The count-oriented approaches did not outperform conventional tree-based ensembles. Poisson Random Forest performed almost identically to squared-error Random Forest, while Negative Binomial Regression produced lower predictive accuracy.
+
+KNN was the only approach with a negative mean R² and produced the largest prediction errors.
+
+<img src="figures/model_5/VERO_algorithm_R2_comparison.png" width="600"> </br>
+
+<img src="figures/model_5/VERO_algorithm_MAE_comparison.png" width="600"> </br>
+
+<img src="figures/model_5/VERO_algorithm_RMSE_comparison.png" width="600"> </br>
+
+Overall, the comparison indicates that **tree-based ensemble methods provided the strongest predictive performance** among the approaches tested.
+
+
+### **8.6 Interpretation**
+Model 5 demonstrated that tree-based ensemble methods were the most effective approaches for predicting VERO seed production using the selected environmental and functional predictors.
+
+Gradient Boosting achieved the highest mean R² (0.203) and lowest RMSE (17.87 seeds). However, its performance was nearly identical to Random Forest and Extra Trees, suggesting that no single tree-based ensemble demonstrated a substantial advantage.
+
+Linear Regression and Negative Binomial Regression produced positive R² values but were less accurate than the leading ensemble approaches. KNN performed worse than the mean-based baseline.
+
+The similarity among the tree-based models suggests that **changing the modeling algorithm alone may provide limited improvement in predictive performance** with the current predictor set. Even the strongest model achieved a mean R² of only **0.203**, indicating that considerable variation in individual VERO seed production remained unexplained.
+
+An important limitation is the use of standard KFold cross-validation. Because observations from the same plot may appear in both training and testing datasets, these results do not establish how accurately the models would predict seed production in entirely unseen plots.
+
+Overall, the findings suggest that the selected environmental and functional predictors contain useful information about VERO seed production, but substantial variation remains difficult to predict.
+
+
+### **8.7 Discussion / Conclusion**
+Model 5 completed the comparison of seven regression approaches using the environmental and functional predictors selected from Model 4. Gradient Boosting achieved the strongest overall performance, with an R² of 0.203, MAE of 10.83 seeds, and RMSE of 17.87 seeds. However, Random Forest and Extra Trees produced nearly identical results, suggesting that the choice of tree-based ensemble algorithm had little influence on predictive accuracy.
+
+Across the project, expanding the predictors beyond environmental conditions helped incorporate additional ecological information, particularly plant functional diversity and composition. These characteristics demonstrated predictive importance in Model 4, supporting their inclusion in the final algorithm comparison.
+
+Despite these findings, overall predictive performance remained limited. Even the strongest algorithm explained only a relatively small proportion of variation in individual VERO seed production. This suggests that seed production may be influenced by additional biological or environmental factors not captured by the available predictors.
+
+The results also highlight the importance of cross-validation methods. Standard KFold produced stronger predictive performance than GroupKFold in Model 4, indicating that predicting individuals within sampled plots is easier than predicting observations from entirely unseen plots.
+
+Overall, the project demonstrated that ecological predictors provide useful information about VERO seed production, but substantial variation remains unexplained. Tree-based ensemble methods were the most effective approaches tested, although their similar performance suggests that the available predictors, rather than the choice of algorithm alone, may be an important limitation on predictive accuracy.
+
+---
+
+[Back to Start](#table-of-contents)
+---

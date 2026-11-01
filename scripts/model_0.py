@@ -115,18 +115,12 @@ rf_model = RandomForestRegressor(
     random_state=42,
     n_jobs=-1)
 
-
-# Grouped cross-validation
-# GroupKFold prevents observations from being included in both training and testing datasets
 cv = GroupKFold(n_splits=5)
 
 scoring = {
     "R2": "r2",
     "MAE": "neg_mean_absolute_error",
     "RMSE": "neg_root_mean_squared_error"}
-
-
-
 
 cv_results = cross_validate(
     rf_model,
@@ -158,7 +152,6 @@ importance = pd.DataFrame({
     "Importance": rf_model.feature_importances_})
 
 importance["Importance"] = importance["Importance"].round(3)
-
 importance = importance.sort_values(
     "Importance",
     ascending=False)

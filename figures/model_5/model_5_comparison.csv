@@ -1,0 +1,8 @@
+Model,R2,MAE,RMSE,Status
+Gradient Boosting,0.203,10.83,17.87,Success
+Random Forest,0.2,10.83,17.9,Success
+Random Forest (Poisson),0.199,10.83,17.9,Success
+Extra Trees,0.198,10.84,17.92,Success
+Linear Regression,0.135,11.74,18.62,Success
+Negative Binomial Regression,0.111,11.82,18.85,Success
+K-Nearest Neighbors,-0.072,13.77,20.6,Success
