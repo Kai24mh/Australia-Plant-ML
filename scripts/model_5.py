@@ -25,7 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
-from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.base import BaseEstimator, RegressorMixin, clone
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import (
     RandomForestRegressor,
@@ -36,6 +36,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold, cross_validate
+from sklearn.inspection import permutation_importance
 
 
 """ PREPARE AND CALL DATA """
@@ -448,6 +449,98 @@ plt.savefig(
     bbox_inches = "tight")
 
 plt.show()
+
+
+
+""" CROSS-VALIDATED PERMUTATION FEATURE IMPORTANCE """
+
+# Measure the decrease in held-out R² when each predictor is shuffled.
+importance_rows = []
+
+for model_name, model in models.items():
+
+    # Only evaluate models that completed the original comparison
+    model_status = results_df.loc[
+        results_df["Model"] == model_name, "Status"].iloc[0]
+
+    if model_status != "Success":
+        continue
+
+    print(f"\nPermutation importance: {model_name}")
+
+    for fold_number, (train_idx, test_idx) in enumerate(cv.split(X, y), 1):
+        fitted_model = clone(model)
+
+        try:
+            # Fit on training data only; measure importance on held-out data
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", RuntimeWarning)
+                fitted_model.fit(X.iloc[train_idx], y.iloc[train_idx])
+
+                importance = permutation_importance(
+                    fitted_model,
+                    X.iloc[test_idx],
+                    y.iloc[test_idx],
+                    scoring="r2",
+                    n_repeats=10,
+                    random_state=42,
+                    n_jobs=1)
+
+            for feature, mean_score in zip(
+                numeric_features, importance.importances_mean):
+                importance_rows.append({
+                    "Model": model_name,
+                    "Fold": fold_number,
+                    "Feature": feature,
+                    "Importance": mean_score})
+
+        except Exception as error:
+            print(f"  Fold {fold_number} skipped: {error}")
+
+if importance_rows:
+    importance_df = pd.DataFrame(importance_rows)
+
+    # Mean and standard deviation across all successful fold scores
+    importance_summary = (
+        importance_df.groupby(["Model", "Feature"])["Importance"]
+        .agg(Mean_Importance="mean", SD_Importance="std", Folds="count")
+        .reset_index())
+
+    importance_summary.to_csv(
+        FIGURE_DIR_5 / "VERO_permutation_importance.csv",
+        index=False)
+
+    print("\nCROSS-VALIDATED PERMUTATION IMPORTANCE (R² decrease)")
+    for model_name in models:
+        subset = importance_summary.loc[
+            importance_summary["Model"] == model_name
+        ].sort_values("Mean_Importance", ascending=False)
+
+        if subset.empty:
+            continue
+
+        print(f"\n{model_name}")
+        print(subset[["Feature", "Mean_Importance", "SD_Importance", "Folds"]]
+              .to_string(index=False))
+
+        # Plot a separate ranked importance chart for each algorithm
+        ordered = subset.sort_values("Mean_Importance")
+        fig, ax = plt.subplots(figsize=(9, 5))
+        ax.barh(ordered["Feature"], ordered["Mean_Importance"],
+                color="powderblue")
+        ax.axvline(0, color="black", linewidth=1)
+        ax.set_xlabel("Mean decrease in held-out R² after permutation")
+        ax.set_title(f"VERO Feature Importance: {model_name}")
+        fig.tight_layout()
+        safe_name = model_name.lower().replace(" ", "_").replace(
+            "(", "").replace(")", "")
+        fig.savefig(
+            FIGURE_DIR_5 / f"VERO_importance_{safe_name}.png",
+            dpi=300, bbox_inches="tight")
+        plt.show()
+        plt.close(fig)
+else:
+    print("\nNo permutation importance results could be calculated.")
 
 
 

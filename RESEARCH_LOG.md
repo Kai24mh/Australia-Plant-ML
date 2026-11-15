@@ -12,7 +12,7 @@
 - [1. Introduction](#1-project-overview)
     - [1.1 Dissertation Background](#11-dissertation-background)
     - [1.2 Initial Project Directions](#12-initial-project-directions)
-    - [1.3 Current Research Direction](#13-current-research-direction)
+    - [1.3 Research Direction Evolution](#13-research-direction-evolution)
 - [2. Data](#2-data)
     - [2.1 Individual Trait Data](#21-individual-trait-data)
     - [2.2 Plot Condition Data](#22-plot-condition-data)
@@ -50,6 +50,11 @@
     - [6.3 Predictors](#63-predictors)
     - [6.4 Model Approach](#64-model-approach)
     - [6.5 Results](#65-results)
+        - [6.5.1 Model 3a - VERO](#651-model-3a---vero)
+        - [6.5.2 Model 3b - ARCA](#652-model-3b---arca)
+        - [6.5.3 Model 3c - PEAI](#653-model-3c---peai)
+        - [6.5.4 Model 3d - POCA](#654-model-3d---poca)
+        - [6.5.5 Comparison Across Species](#655-comparison-across-species)
     - [6.6 Discussion / Next Steps](#66-discussion--next-steps)
 - [7. Model 4 — Ecological Predictor Exploration and Evaluation](#7-model-4---ecological-predictor-exploration-and-evaluation)
     - [7.1 Research Question](#71-research-question)
@@ -78,7 +83,7 @@
         - [8.5.4 Model 5d - Linear Regression](#854-model-5d---linear-regression)
         - [8.5.5 Model 5e - Gradient Boosting](#855-model-5e---gradient-boosting)
         - [8.5.6 Model 5f - Extra Trees](#856-model-5f---extra-trees)
-        - [8.5.7 Model 5g - K-Nearest Naighbors](#857-model-5g---k-nearest-neighbors)
+        - [8.5.7 Model 5g - K-Nearest Neighbors](#857-model-5g---k-nearest-neighbors)
         - [8.5.8 Model Comparison](#858-model-comparison)
     - [8.6 Interpretation](#86-interpretation)
     - [8.7 Discussion / Conclusion](#87-discussion--conclusion)
@@ -107,12 +112,16 @@ Several potential research directions were considered for analyzing the disserta
 - Species interactions and biological groupings: Explore whether species interactions or broader classifications, such as functional or taxonomic groups, could help explain differences in plant performance.
 
 
-### **1.3 Current Research Direction**
-The project currently focuses on using machine-learning approaches to examine patterns in plant reproductive output and determine how well reproductive success can be predicted from environmental and biological characteristics.
+### **1.3 Research Direction Evolution**
+The project focused on using machine-learning approaches to investigate patterns in plant reproductive output and evaluate how accurately reproductive success could be predicted from environmental and ecological characteristics.
 
-The analysis began with bud production as the response variable and environmental conditions as predictors. Limitations identified during this initial analysis led to a transition toward seed production, which provided a substantially larger dataset across more species and plots.
+The analysis initially examined bud production using environmental predictors. However, limitations in the available bud data led to a transition toward seed production, which provided a substantially larger dataset across more species and plots.
 
-The current modeling framework uses Random Forest regression with plot-grouped cross-validation. Models are being developed iteratively to evaluate different ways of representing biological variation, including species identity and broader species groupings, alongside plot-level environmental conditions.
+Early models investigated whether environmental conditions, species identity, and broader taxonomic groupings could predict seed production in previously unseen plots. Limited predictive performance led to a more focused investigation of individual species, particularly VERO, which was well represented in the dataset and was a primary species of interest in the original dissertation.
+
+The later stages expanded the predictors to include ecological characteristics such as species diversity and plant functional composition. The evaluation strategy also shifted from emphasizing generalization to unseen plots toward predicting individual VERO observations within the sampled plot population. Finally, alternative machine-learning and regression approaches were compared to determine whether algorithm selection could improve predictive performance.
+
+Throughout these stages, the research evolved from broad predictions of plant reproductive output toward a more focused investigation of the environmental and ecological characteristics associated with individual VERO seed production.
 
 --- 
 ## **2. Data**
@@ -162,10 +171,10 @@ The current modeling framework uses Random Forest regression with plot-grouped c
 **Altered file:** `species_data_TEM_2026.csv` </br>
 **Cleaned file:** `species.csv` </br>
 **Contains:** Species-level information, including species name, species code, life form, exotic status, taxonomic family, reserve occurrence, and additional notes </br>
-**Used for:** Providing taxonomic information for Model 2, where species are grouped by taxonomic family to evaluate whether broader taxonomic relationships improve predictions of seed production compared with using individual species identities. </br>
+**Used for:** Providing taxonomic information for Model 2, where species were grouped by family, and supporting the development of additional ecological predictors in Model 4, including plant functional composition, family composition, and native/exotic species characteristics. </br>
 **Cleaning performed:**
 - Missing taxonomic information was placed into a new csv file (`species_data_TEM_2026.csv`)
-- All matching values were placed into a new cleaned csv file (`species.csv`) for Model 2
+- Matching species information was consolidated into a cleaned csv file (`species.csv`) for use in subsequent analyses.
 
 ---
 ## **3. Model 0 - Bud Production: Environmental Predictors**
@@ -205,7 +214,7 @@ Bud production among the four species:
 
 The exploratory results showed substantial differences in bud production among the four species. Although observation counts were relatively similar among the four species, total and mean bud production varied considerably among species. This variation suggested that species identity could potentially account for some of the differences in individual reproductive output.
 
-Bud production was also examined across plots where bud production varied considerdably.
+Bud production was also examined across plots where bud production varied considerably.
 
 <img src="figures/exploration/buds_per_plot.png" width="600">
 
@@ -352,7 +361,7 @@ Because 70 species were represented in the modeling dataset, the seven most freq
 
 VERO, ARCA, and PEAI were particularly well represented, with more than 2,400 observations each. In contrast, many species had relatively few observations, including several species represented by only one or two observations.
 
-Seed production also differed substantially among species. For example, PEAI averaged **149.79 seeds per observation**, while VERO averaged **18.47** despite having the largest number of observations. POCA also had relatively high seed production, averaging **142.79 seeds** per observation. These differences in seed production among species suggested that species identity could account for some of the variation not captured by plot-level environmental conditions alone..
+Seed production also differed substantially among species. For example, PEAI averaged **149.79 seeds per observation**, while VERO averaged **18.47** despite having the largest number of observations. POCA also had relatively high seed production, averaging **142.79 seeds** per observation. These differences in seed production among species suggested that species identity could account for some of the variation not captured by plot-level environmental conditions alone.
 
 
 ### **4.4 Predictors**
@@ -733,7 +742,7 @@ Total ARCA seed production also varied substantially among plots. Some plots pro
 | --- | ---: |
 | Mean R² | -0.732 |
 | Mean MAE | 69.87 seeds |
-| Mean RMSE | 99.34 seeds |
+| Mean RMSE | 99.35 seeds |
 
 The ARCA-specific Random Forest showed poor predictive performance. The mean cross-validated R² was **−0.732**, indicating that predictions on held-out plots performed substantially worse than a simple baseline based on the mean seed count.
 
@@ -837,7 +846,7 @@ A large proportion of the PEAI dataset was associated with plots identified as u
 | 24 | 652 | 23387 | 35.87 | 32 |
 | 41 | 96 | 38071 | 396.57 | 303 |
 | 47 | 121 | 28023 | 231.60 | 124 |
-| 64 | 16 | 12802 | 1237.62 | 718 |
+| 64 | 16 | 19802 | 1237.62 | 718 |
 | 71 | 34 | 14980 | 440.59 | 254 |
 | 76 | 32 | 23233 | 726.03 | 518 |
 | 77 | 65 | 14388 | 221.35 | 156 |
@@ -974,17 +983,21 @@ Overall, separating the dataset by species did not resolve the poor predictive p
 
 
 ### **6.6 Discussion / Next Steps**
-The next stage of the project will focus specifically on **VERO** rather than continuing to model multiple species. VERO was a primary species of interest in the original dissertation and was well represented within the available dataset, with 3,027 observations across 46 plots. Focusing on VERO also reduces concerns associated with differences in how other species were represented during data collection. For example, the PEAI analysis showed that uneven representation among plots could have a substantial influence on model performance.
+The next stage of the project will focus specifically on VERO rather than continuing to model multiple species. VERO was a primary species of interest in the original dissertation and was well represented within the available dataset, with 3,027 observations across 46 plots. Focusing on VERO also reduces concerns associated with differences in how other species were represented during data collection. For example, the PEAI analysis showed that uneven representation among plots could have a substantial influence on model performance.
 
 The next step will focus on **evaluating and expanding the predictors used to model VERO seed production**. Models 0–3 relied primarily on six environmental variables: litter cover, bare ground, woody vegetation, soil phosphorus, soil water, and canopy cover. Although these variables describe important environmental conditions, they do not directly account for the surrounding plant community or potential interactions among species.
 
 To address this limitation, additional ecological predictors will be developed using the available plot-level and species data. These will include measures of species diversity, functional composition, taxonomic composition, and potential competition. For example, the number of individuals within a plot may provide information about plant density and competitive pressure, while species diversity and functional group proportions may help describe differences in community structure.
 
+**The next stage will also reconsider the cross-validation strategy used in previous models**. Models 0–3 used GroupKFold cross-validation to evaluate whether models could predict reproductive output in entirely unseen plots. However, the consistently negative R² values suggest that the available predictors provided limited generalization across plots. Model 4 will therefore compare GroupKFold with standard KFold, with the subsequent analysis focusing on standard KFold to investigate predictive relationships within the sampled plot population.
+
+This change also shifts the overarching research question. Rather than primarily asking whether environmental conditions can predict reproductive output in **unseen plots**, the remaining models will investigate **how accurately individual VERO seed production can be predicted using environmental and ecological characteristics within the sampled plots**. Because standard KFold allows observations from the same plot to appear in both training and testing subsets, its results cannot be interpreted as evidence of predictive performance in entirely new plots.
+
 The expanded predictor dataset will then be explored to identify relationships with VERO seed production. This will involve examining the distribution of seed counts, identifying extreme observations, investigating variation among plots, and evaluating correlations between seed production and the environmental and ecological predictors. Particular attention will be given to understanding whether unusually high seed counts represent meaningful ecological variation rather than observations that should automatically be excluded.
 
 Following this exploratory analysis, different groups of predictors will be evaluated to determine whether incorporating community-level information improves predictive performance compared with the original environmental variables alone. The effects of outlier treatment and response-variable transformations will also be investigated to better understand how the distribution of seed production influences model performance.
 
-The overall goal of this next stage is to **identify which ecological characteristics provide the most useful information for predicting VERO seed production**. Establishing a more informative set of predictors will provide a foundation for subsequent comparisons of machine-learning algorithms and further refinement of the VERO models..
+The overall goal of this next stage is to **identify which ecological characteristics provide the most useful information for predicting individual VERO seed production within the sampled plot population**. Establishing a more informative set of predictors will provide a foundation for subsequent comparisons of machine-learning algorithms and further refinement of the VERO models.
 
 
 ---
@@ -1100,7 +1113,7 @@ Plot-level correlation analysis identified several ecological predictors associa
 | Predictor | Spearman correlation |
 | --- | ---: |
 | Family_Prop_Poaceae | +0.605 |
-| SpeciesProp_PEAI | +6.04 |
+| SpeciesProp_PEAI | +0.604 |
 | LifeForm_Prop_annual.forb | -0.599 |
 | LifeForm_Prop_annual.graminoid | +0.583 |
 | LifeForm_Shannon | +0.576 |
@@ -1185,15 +1198,15 @@ All valid observations, including high-seed counts, will be retained because ext
 
 ### **8.1 Research Question**
 
-How does the predictive performance of different machine learning algorithms and count-based regression approaches compare when predicting VERO seed production using the environmental and ecological predictors selected from Model 4?
+How does the predictive performance of different machine learning algorithms and count-based regression approaches compare when predicting individual VERO seed production using the environmental and ecological predictors selected from Model 4?
 
-Model 4 investigated the relationships between VERO seed production and additional ecological predictors, including functional composition, species diversity, and competitive context.
-
-Based on these analyses, Model 5 uses a selected set of environmental and functional predictors to compare alternative modeling approaches.
+Model 4 evaluated additional ecological predictors and compared cross-validation strategies, ultimately establishing a predictor set for further evaluation. Building on these findings, Model 5 compares alternative regression approaches using the same nine predictors and standard KFold cross-validation.
 
 Model 5 addresses two primary questions:
-1. Do alternative machine learning algorithms improve predictions of VERO seed production compared with Random Forest?
+1. Do alternative machine learning algorithms improve predictions of individual VERO seed production compared with Random Forest?
 2. Do regression approaches designed for count outcomes improve predictive performance compared with conventional regression methods?
+
+Unlike the earlier models that emphasized generalization to entirely unseen plots, Model 5 focuses on predicting held-out individual observations from the sampled plot population. This allows algorithm performance to be compared under a consistent evaluation framework, while recognizing that the results do not establish predictive accuracy in previously unseen plots.
 
 
 ### **8.2 Data**
@@ -1205,9 +1218,9 @@ Model 5 uses the expanded VERO dataset created during Model 4, combining individ
 
 The response variable remains `Num.Seed`, representing the number of seeds recorded for an individual observation.
 
-All observations were retained, including extreme seed counts identified during the exploratory analysis in Model 4.
+All observations were retained, including extreme seed counts identified during the exploratory analysis in Model 4. No observations were excluded solely because of unusually high seed production.
 
-Restricting the analysis to VERO allowed different modeling approaches to be compared using the same observations and predictor variables.
+Using the same VERO observations and predictor variables across all seven algorithms allowed differences in predictive performance to be evaluated under consistent data conditions.
 
 
 ### **8.3 Predictors**
@@ -1226,11 +1239,11 @@ Model 5 uses nine predictors, consisting of the six original environmental varia
 - `LifeForm_Prop_annual.graminoid` — Proportion of individuals classified as annual graminoids
 - `LifeForm_Prop_annual.forb` — Proportion of individuals classified as annual forbs
 
-These predictors were selected following Model 4d, where functional diversity and composition demonstrated positive permutation importance in predicting VERO seed production.
+The three functional predictors were retained following the evaluations conducted in Model 4, where they demonstrated positive permutation importance in predicting VERO seed production. Their inclusion allows Model 5 to incorporate information about plant functional diversity and composition alongside the original environmental conditions.
 
 Species identity was not included as a separate predictor because the analysis was restricted to VERO.
 
-Using the same nine predictors for every algorithm allowed differences in predictive performance to be evaluated without introducing differences in predictor selection.
+The same nine predictors were used across all seven algorithms to ensure that differences in predictive performance reflected the modeling approaches rather than differences in predictor selection.
 
 
 ### **8.4 Model Approach**
@@ -1239,22 +1252,28 @@ Model 5 compared seven regression approaches:
 - **Random Forest:** An ensemble of decision trees using a squared-error splitting criterion to predict continuous seed counts.
 - **Random Forest (Poisson):** The same general Random Forest approach, but using a Poisson deviance splitting criterion designed for nonnegative count responses. This is not a full probabilistic Poisson regression model.
 - **Negative Binomial Regression:** A count regression approach that allows the variance of seed counts to exceed their mean. This is a separate regression method, not a Negative Binomial Random Forest.
-- **Linear Regression:** A linear baseline that models seed counts as a function of the environmental predictors.
+- **Linear Regression:** A linear baseline that models seed counts as a function of the selected environmental and functional ecological predictors.
 - **Gradient Boosting:** A sequential ensemble of decision trees in which successive trees improve on earlier predictions.
 - **Extra Trees:** A randomized tree ensemble that introduces additional randomness when selecting tree splits.
 - **K-Nearest Neighbors:** A distance-based method that predicts using observations with similar predictor values.
 
-All seven approaches were evaluated using **5-fold standard KFold cross-validation**, with shuffled folds and a fixed random seed (random_state=42).
-
-Unlike GroupKFold, standard KFold does not group observations by plot. Consequently, observations from the same plot may occur in both training and testing datasets.
+All seven approaches were evaluated using **5-fold standard KFold cross-validation**, with shuffled folds and a fixed random seed (random_state=42). Unlike GroupKFold, standard KFold does not group observations by plot. Consequently, observations from the same plot may occur in both training and testing datasets.
 
 Because the predictors are measured at the plot level, this approach evaluates prediction among held-out individual observations rather than generalization to entirely unseen plots.
+
+Predictors were standardized using StandardScaler for Linear Regression, Negative Binomial Regression, and K-Nearest Neighbors. Scaling was performed within each cross-validation training fold using scikit-learn pipelines to prevent information leakage. Tree-based ensemble methods were evaluated without feature scaling.
 
 Model performance was evaluated using:
 
 - **R²** — proportion of variation in seed production explained by the model
 - **MAE** — mean absolute difference between observed and predicted seed counts
 - **RMSE** — measure of prediction error that gives greater weight to larger errors
+
+**Permutation feature importance** was calculated for each algorithm to evaluate the contribution of individual predictors to predictive performance. For each cross-validation fold, predictor values were randomly shuffled within the held-out testing subset, and the resulting decrease in R² was measured. This procedure was repeated 10 times per predictor, with importance values averaged across the five folds.
+
+A larger positive importance value indicates that shuffling a predictor caused a greater reduction in predictive performance, suggesting that the model relied more heavily on that predictor. Values near zero indicate little measurable change in performance, while negative values indicate that shuffling the predictor improved performance under the evaluation used.
+
+Using permutation importance allowed predictor contributions to be evaluated consistently across all seven regression approaches, including tree-based, linear, count-based, and distance-based models.
 
 
 ### **8.5 Results**
@@ -1270,9 +1289,11 @@ Random Forest was evaluated using the expanded predictor set to establish a comp
 
 Random Forest produced a mean R² of **0.200**, an MAE of **10.83 seeds**, and an RMSE of **17.90 seeds**.
 
-The positive R² indicates that the model performed better than a mean-based prediction baseline under standard KFold cross-validation.
+Random Forest achieved a mean R² of **0.200**, indicating positive predictive performance relative to a mean-based baseline under standard KFold cross-validation. The model produced an MAE of **10.83 seeds** and an RMSE of **17.90 seeds**.
 
-Random Forest was among the strongest-performing approaches, although its results were similar to those of the other tree-based ensemble models.
+</br><img src="figures/model_5/VERO_importance_random_forest.png" width="600">
+
+Permutation feature importance identified **Soil.Water(0.171)**, **LifeForm_Shannon(0.096)**, and **LifeForm_Prop_annual.forb(0.076)** as the most influential predictors. Soil water produced the largest decrease in predictive performance when shuffled, followed by functional diversity and annual forb composition. These results indicate that both environmental conditions and functional ecological characteristics contributed to the model's predictions.
 
 
 #### **8.5.2 Model 5B - Random Forest Poisson**
@@ -1284,11 +1305,11 @@ Random Forest was also evaluated using the **Poisson splitting criterion**, whic
 | Mean MAE | 10.83 seeds |
 | Mean RMSE | 17.90 seeds |
 
-Poisson Random Forest produced a mean R² of **0.199**, an MAE of **10.83 seeds**, and an RMSE of **17.90 seeds**.
+Poisson Random Forest achieved a mean R² of **0.199**, an MAE of **10.83 seeds**, and an RMSE of **17.90 seeds**. These results were nearly identical to those of squared-error Random Forest, indicating that changing the splitting criterion did not meaningfully improve predictive performance.
 
-Performance was nearly identical to that of the squared-error Random Forest.
+</br><img src="figures/model_5/VERO_importance_random_forest_poisson.png" width="600">
 
-Changing the splitting criterion therefore did not meaningfully improve predictive performance.
+Permutation feature importance identified **Soil.Water(0.144)**, **LifeForm_Shannon(0.099)**, and **LifeForm_Prop_annual.forb(0.051)** as the strongest predictors. This ranking was consistent with squared-error Random Forest, suggesting that changing the splitting criterion had little effect on the relative importance of the leading predictors.
 
 
 #### **8.5.3 Model 5C - Negative Binomial Regression**
@@ -1300,15 +1321,17 @@ Negative Binomial Regression was tested because seed production is a count respo
 | Mean MAE | 11.82 seeds |
 | Mean RMSE | 18.85 seeds |
 
-Negative Binomial Regression produced a mean R² of **0.111**, an MAE of **11.82 seeds**, and an RMSE of **18.85 seeds**.
+Negative Binomial Regression achieved a mean R² of **0.111**, an MAE of **11.82 seeds**, and an RMSE of **18.85 seeds**. Although the model demonstrated positive predictive performance relative to a mean-based baseline, its accuracy was lower than that of the Random Forest approaches.
 
-Although the model achieved positive predictive performance, it performed worse than the leading tree-based ensemble approaches across all three metrics.
+</br><img src="figures/model_5/VERO_importance_negative_binomial_regression.png" width="600">
 
-These results suggest that the Negative Binomial specification tested did not provide an advantage over the leading machine learning algorithms.
+Permutation feature importance identified **LifeForm_Prop_annual.forb(2.745)** and **LifeForm_Shannon(0.608)** as the most influential predictors. The unusually large importance value for annual forb composition indicates that shuffling this variable substantially reduced predictive performance. However, the high variability across validation folds (SD = 1.914) suggests that the model's reliance on this predictor was not consistent across testing subsets.
+
+These findings indicate that functional ecological composition played an important role in the model's predictions, although the magnitude and variability of the importance estimates warrant cautious interpretation.
 
 
 #### **8.5.4 Model 5D - Linear Regression**
-Linear Regression was tested as a simpler alternative to the tree-based machine learning approaches.
+Linear Regression was evaluated as a simpler, non-tree-based alternative to the ensemble approaches, using the same nine environmental and functional ecological predictors.
 
 | Metric | Value |
 | --- | ---: |
@@ -1316,31 +1339,31 @@ Linear Regression was tested as a simpler alternative to the tree-based machine 
 | Mean MAE | 11.74 seeds |
 | Mean RMSE | 18.62 seeds |
 
-Linear Regression produced a mean R² of **0.135**, an MAE of **11.74 seeds**, and an RMSE of **18.62 seeds**.
+Linear Regression achieved a mean R² of **0.135**, an MAE of **11.74 seeds**, and an RMSE of **18.62 seeds**. Although the model demonstrated positive predictive performance relative to a mean-based baseline, it was less accurate than the Random Forest approaches. This suggests that the linear relationships represented by this model may not fully capture the predictive patterns available in the selected variables.
 
-Although Linear Regression achieved positive R², its predictive performance was weaker than that of Random Forest, Gradient Boosting, and Extra Trees.
+</br><img src="figures/model_5/VERO_importance_linear_regression.png" width="600">
 
-This suggests that the relationships between the selected predictors and VERO seed production may not be fully represented by simple linear relationships.
+Permutation feature importance identified **LifeForm_Shannon(0.153)** as the strongest predictor, followed by **LifeForm_Prop_annual.forb(0.041)** and **LifeForm_Prop_annual.graminoid(0.041)**. Unlike the Random Forest approaches, Linear Regression relied more heavily on functional ecological predictors than on individual environmental variables, suggesting that functional diversity and composition provided particularly useful predictive information within this model.
 
 
 #### **8.5.5 Model 5E - Gradient Boosting**
-Gradient Boosting was tested as an alternative tree-based ensemble approach.
+Gradient Boosting was evaluated as an alternative tree-based ensemble approach that sequentially builds decision trees to improve predictive performance.
 
 | Metric | Value |
 | --- | ---: |
 | Mean R² | 0.203 |
 | Mean MAE | 10.83 seeds |
-| Mean RMSE | 17.97 seeds |
+| Mean RMSE | 17.87 seeds |
 
-Gradient Boosting produced a mean R² of **0.203**, an MAE of **10.83 seeds**, and an RMSE of **17.87 seeds**.
+Gradient Boosting achieved a mean R² of **0.203**, an MAE of **10.83 seeds**, and an RMSE of **17.87 seeds**. It produced the highest mean R² and lowest mean RMSE among the seven approaches, although its performance was very similar to that of the other tree-based ensembles.
 
-Gradient Boosting achieved the highest mean R² and lowest mean RMSE among the seven approaches.
+</br><img src="figures/model_5/VERO_importance_gradient_boosting.png" width="600">
 
-However, its performance was nearly identical to Random Forest and Extra Trees, indicating that the leading tree-based ensembles provided comparable predictive accuracy.
+Permutation feature importance identified **Soil.Water(0.143)**, **LifeForm_Shannon(0.119)**, and **Canopy.Cover(0.080)** as the strongest predictors. Soil water produced the greatest decrease in predictive performance when shuffled, followed by functional diversity and canopy cover. These findings indicate that both environmental conditions and functional ecological characteristics contributed to the predictions of the highest-performing algorithm.
 
 
 #### **8.5.6 Model 5F - Extra Trees**
-Extra Trees was tested as another tree-based ensemble approach.
+Extra Trees was evaluated as an alternative tree-based ensemble approach that introduces additional randomness when selecting decision-tree splits.
 
 | Metric | Value |
 | --- | ---: |
@@ -1348,12 +1371,11 @@ Extra Trees was tested as another tree-based ensemble approach.
 | Mean MAE | 10.84 seeds |
 | Mean RMSE | 17.92 seeds |
 
-Extra Trees produced a mean R² of **0.198**, an MAE of **10.84 seeds**, and an RMSE of **17.92 seeds**.
+Extra Trees achieved a mean R² of **0.198**, an MAE of **10.84 seeds**, and an RMSE of **17.92 seeds**. Its predictive performance was nearly identical to that of Random Forest and Gradient Boosting, providing further evidence that the tested tree-based ensemble approaches achieved comparable accuracy.
 
-Performance was very similar to Random Forest and Gradient Boosting.
+</br><img src="figures/model_5/VERO_importance_extra_trees.png" width="600">
 
-The similarity among these approaches suggests that the choice between the tested tree-based ensembles had relatively little effect on predictive performance.
-
+Permutation feature importance identified **LifeForm_Shannon(0.079)**, **Soil.Water(0.053)**, and **LifeForm_Prop_annual.forb(0.046)** as the most influential predictors. Unlike the other leading tree-based ensembles, Extra Trees identified functional diversity as its highest-ranked predictor, followed by soil water and annual forb composition. Nevertheless, the importance rankings were broadly consistent with the other ensemble approaches, indicating that environmental conditions and functional ecological characteristics contributed to predictive performance.
 
 #### **8.5.7 Model 5G - K-Nearest Neighbors**
 K-Nearest Neighbors (KNN) was tested as a non-tree-based machine learning approach.
@@ -1364,14 +1386,18 @@ K-Nearest Neighbors (KNN) was tested as a non-tree-based machine learning approa
 | Mean MAE | 13.77 seeds |
 | Mean RMSE | 20.60 seeds |
 
-KNN produced a negative mean R² of **−0.072**, indicating that its predictions performed worse than a mean-based baseline under the evaluation used.
+KNN achieved a mean R² of **−0.072**, indicating that its predictions performed worse than a mean-based baseline under standard KFold cross-validation. The model also produced the largest prediction errors among the seven approaches, with an MAE of **13.77 seeds** and an RMSE of **20.60 seeds.**
 
-The model also produced the largest prediction errors, with an MAE of **13.77 seeds** and an RMSE of **20.60 seeds**.
+These results suggest that KNN was less effective at predicting VERO seed production under the predictor configuration and model settings evaluated.
 
-These results suggest that KNN was not well suited to predicting VERO seed production using the selected predictors and model settings.
+</br><img src="figures/model_5/VERO_importance_k-nearest_neighbors.png" width="600">
+
+Permutation feature importance identified **Soil.Water(0.147)**, **LifeForm_Prop_annual.graminoid(0.146)**, and **Canopy.Cover(0.130)** as the strongest predictors. However, importance estimates varied substantially across cross-validation folds. Combined with the model's negative mean R², this variability suggests that the predictor rankings should be interpreted cautiously, as they do not necessarily indicate reliable predictive relationships.
 
 
 #### **8.5.8 Model Comparison**
+
+The predictive performance of all seven regression approaches was compared using mean R², MAE, and RMSE from 5-fold standard KFold cross-validation.
 
 | Model | R² | MAE | RMSE |
 | --- | ---: | ---: | ---: |
@@ -1383,13 +1409,11 @@ These results suggest that KNN was not well suited to predicting VERO seed produ
 | Negative Binomial Regression | 0.111 | 11.82 | 18.85 |
 | K-Nearest Neighbors | -0.072 | 13.77 | 20.60 |
 
-Gradient Boosting achieved the highest mean R² and lowest RMSE, but differences among the four tree-based ensemble approaches were minimal. All four produced mean R² values of approximately **0.20**.
+Gradient Boosting achieved the highest mean R² (0.203) and lowest RMSE (17.87 seeds). However, differences among the four tree-based ensemble approaches were minimal, with mean R² values ranging from **0.198 to 0.203** and nearly identical prediction errors.
 
-Linear Regression and Negative Binomial Regression produced lower positive R² values, while KNN was the only algorithm with a negative mean R².
+Linear Regression and Negative Binomial Regression achieved lower positive R² values of 0.135 and 0.111, respectively. K-Nearest Neighbors was the only approach with a negative mean R² (−0.072) and produced the largest prediction errors.
 
-The count-oriented approaches did not outperform conventional tree-based ensembles. Poisson Random Forest performed almost identically to squared-error Random Forest, while Negative Binomial Regression produced lower predictive accuracy.
-
-KNN was the only approach with a negative mean R² and produced the largest prediction errors.
+The count-oriented approaches did not demonstrate an improvement over conventional regression methods. Poisson Random Forest performed nearly identically to squared-error Random Forest, while Negative Binomial Regression achieved lower predictive accuracy than both Random Forest and Linear Regression.
 
 <img src="figures/model_5/VERO_algorithm_R2_comparison.png" width="600"> </br>
 
@@ -1397,33 +1421,35 @@ KNN was the only approach with a negative mean R² and produced the largest pred
 
 <img src="figures/model_5/VERO_algorithm_RMSE_comparison.png" width="600"> </br>
 
-Overall, the comparison indicates that **tree-based ensemble methods provided the strongest predictive performance** among the approaches tested.
+Overall, **tree-based ensemble methods provided the strongest predictive performance** among the seven approaches evaluated.
+
+Permutation feature importance also revealed several consistent patterns across algorithms. **Soil.Water** and **LifeForm_Shannon** were frequently among the highest-ranked predictors, particularly within the tree-based ensembles. **LifeForm_Prop_annual.forb** also demonstrated positive importance across multiple approaches, while **Per.Woody** generally exhibited little measurable importance.
+
+Although the relative rankings varied between algorithms, the leading tree-based ensembles relied on overlapping environmental and functional ecological information.
 
 
 ### **8.6 Interpretation**
-Model 5 demonstrated that tree-based ensemble methods were the most effective approaches for predicting VERO seed production using the selected environmental and functional predictors.
+Model 5 demonstrated that tree-based ensemble methods achieved the strongest predictive performance among the seven approaches evaluated. However, their similar results suggest that changing the modeling algorithm alone provided limited improvement when using the same predictors.
 
-Gradient Boosting achieved the highest mean R² (0.203) and lowest RMSE (17.87 seeds). However, its performance was nearly identical to Random Forest and Extra Trees, suggesting that no single tree-based ensemble demonstrated a substantial advantage.
+Despite these findings, substantial variation in individual VERO seed production remained unexplained. Even the highest-performing model achieved a mean R² of approximately 0.20, suggesting that additional biological or environmental factors not captured by the available predictors may influence seed production.
 
-Linear Regression and Negative Binomial Regression produced positive R² values but were less accurate than the leading ensemble approaches. KNN performed worse than the mean-based baseline.
+Permutation feature importance identified **Soil.Water** and **LifeForm_Shannon** as consistently influential predictors across the leading tree-based ensembles, with **LifeForm_Prop_annual.forb** also contributing across multiple approaches. These results support the inclusion of functional ecological predictors from Model 4 and suggest that both environmental conditions and plant community composition provide useful predictive information. However, permutation importance does not establish causal relationships, and correlations among predictors may influence their importance estimates.
 
-The similarity among the tree-based models suggests that **changing the modeling algorithm alone may provide limited improvement in predictive performance** with the current predictor set. Even the strongest model achieved a mean R² of only **0.203**, indicating that considerable variation in individual VERO seed production remained unexplained.
+An important limitation is the use of **standard KFold cross-validation**. Because observations from the same plot may appear in both training and testing subsets, these results evaluate predictions for held-out individuals within the sampled plot population rather than generalization to entirely unseen plots. Therefore, performance should not be directly compared with the GroupKFold results from Models 0–3 as evidence of improved generalization.
 
-An important limitation is the use of standard KFold cross-validation. Because observations from the same plot may appear in both training and testing datasets, these results do not establish how accurately the models would predict seed production in entirely unseen plots.
+Additionally, the predictors used in Model 5 were selected through analyses of the same VERO dataset during Model 4. Because predictor selection was not independently validated, the reported cross-validation performance may be somewhat optimistic.
 
-Overall, the findings suggest that the selected environmental and functional predictors contain useful information about VERO seed production, but substantial variation remains difficult to predict.
+Overall, Model 5 suggests that **environmental conditions and functional ecological composition provide useful predictive information**, but much of the variation in VERO seed production remains unexplained. Further improvements may depend more on identifying additional informative predictors than on changing modeling algorithms.
 
 
 ### **8.7 Discussion / Conclusion**
-Model 5 completed the comparison of seven regression approaches using the environmental and functional predictors selected from Model 4. Gradient Boosting achieved the strongest overall performance, with an R² of 0.203, MAE of 10.83 seeds, and RMSE of 17.87 seeds. However, Random Forest and Extra Trees produced nearly identical results, suggesting that the choice of tree-based ensemble algorithm had little influence on predictive accuracy.
+Model 5 completed the comparison of seven regression approaches using the environmental and functional ecological predictors selected from Model 4. Gradient Boosting achieved the highest predictive performance (R² = 0.203), although Random Forest and Extra Trees produced nearly identical results. This suggests that the choice of tree-based ensemble algorithm had relatively little influence on predictive accuracy.
 
-Across the project, expanding the predictors beyond environmental conditions helped incorporate additional ecological information, particularly plant functional diversity and composition. These characteristics demonstrated predictive importance in Model 4, supporting their inclusion in the final algorithm comparison.
+Across the project, the analysis progressed from evaluating environmental predictors across multiple species to investigating additional ecological characteristics specifically for VERO. Incorporating functional diversity and composition provided useful predictive information, particularly alongside soil water conditions.
 
-Despite these findings, overall predictive performance remained limited. Even the strongest algorithm explained only a relatively small proportion of variation in individual VERO seed production. This suggests that seed production may be influenced by additional biological or environmental factors not captured by the available predictors.
+However, substantial variation in individual VERO seed production remained unexplained. The results suggest that additional ecological or biological predictors may be necessary to improve predictive performance beyond what was achieved with the available dataset.
 
-The results also highlight the importance of cross-validation methods. Standard KFold produced stronger predictive performance than GroupKFold in Model 4, indicating that predicting individuals within sampled plots is easier than predicting observations from entirely unseen plots.
-
-Overall, the project demonstrated that ecological predictors provide useful information about VERO seed production, but substantial variation remains unexplained. Tree-based ensemble methods were the most effective approaches tested, although their similar performance suggests that the available predictors, rather than the choice of algorithm alone, may be an important limitation on predictive accuracy.
+Overall, the project demonstrated the potential value of incorporating community-level ecological information when predicting VERO seed production. While tree-based ensemble methods were the most effective approaches tested, the findings suggest that **the availability of informative predictors may be a greater limitation than the choice of modeling algorithm.**
 
 ---
 
